@@ -136,10 +136,11 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
         >
           {isHovered ? (
             <div className="gif-container">
-              <div className="gif-frame">
+              <div>
                 <MuxGIF
                   src={`https://image.mux.com/${filteredItems[currentIndex]?.playbackId}/animated.gif?start=2`}
                   alt={filteredItems[currentIndex]?.title}
+                  className="gif-frame"
                 />
               </div>
             </div>
