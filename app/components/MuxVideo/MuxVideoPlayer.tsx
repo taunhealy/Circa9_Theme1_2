@@ -1,36 +1,37 @@
 import React from "react";
-import MuxVideo from "@mux/mux-video-react";
-import "./muxvideo.scss";
+import MuxPlayer, { MuxPlayerProps } from "@mux/mux-player-react";
 
-interface MuxVideoPlayerProps {
+interface MuxVideoThumbnailProps extends Omit<MuxPlayerProps, "controls"> {
   playbackId?: string;
   videoTitle?: string;
   autoPlay?: boolean;
   muted?: boolean;
   startTime?: number;
+  controls?: boolean;
 }
 
-const MuxVideoPlayer: React.FC<MuxVideoPlayerProps> = ({
+const MuxVideoThumbnail: React.FC<MuxVideoThumbnailProps> = ({
   playbackId,
   videoTitle,
   autoPlay = true,
   muted = true,
   startTime = 15,
+  controls,
+  ...rest
 }) => {
   return (
-    <div className="video-container">
-      <MuxVideo
-        playbackId={playbackId}
-        streamType="on-demand"
-        controls={false}
-        autoPlay={autoPlay}
-        loop
-        muted={muted}
-        startTime={startTime}
-        placeholder="" // Add an empty string as a placeholder
-      />
-    </div>
+    <MuxPlayer
+      src={`https://stream.mux.com/${playbackId}/high.mp4`}
+      playbackId={playbackId}
+      streamType="on-demand"
+      autoPlay={autoPlay}
+      loop
+      muted={muted}
+      startTime={startTime}
+      placeholder="" // Add an empty string as a placeholder
+      {...rest}
+    />
   );
 };
 
-export default MuxVideoPlayer;
+export default MuxVideoThumbnail;

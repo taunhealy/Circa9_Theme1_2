@@ -5,9 +5,10 @@ import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import MuxThumbnail from "./MuxThumbnail/MuxThumbnail";
-import MuxGIF from "./MuxGIF/MuxGIF"; // Import your MuxGIF component
+import MuxGIF from "./MuxThumbnailGIF/MuxThumbnailGIF"; // Import your MuxGIF component
 import "./card.scss";
 import { CardProps } from "../data/data";
+import MuxThumbnailGIF from "./MuxThumbnailGIF/MuxThumbnailGIF";
 interface FadeInWhenVisibleProps {
   children: React.ReactNode;
 }
@@ -57,13 +58,9 @@ const Card: React.FC<CardProps> = ({ itemsData }) => {
                   whileHover={{ opacity: 1, transition: { duration: 0.05 } }}
                 >
                   {hoveredIndex === index ? (
-                    <MuxGIF
-                      src={`https://image.mux.com/${item.playbackId}/animated.gif?`}
-                      alt="mux-gif"
-                      className="card-gif"
-                    />
+                    <MuxThumbnailGIF playbackId={item.playbackId} />
                   ) : (
-                    <MuxThumbnail playbackId={item.playbackId} time={15} />
+                    <MuxThumbnail playbackId={item.playbackId} time={10} />
                   )}
                 </motion.div>
               </div>

@@ -14,12 +14,7 @@ const MuxThumbnail: React.FC<MuxThumbnailProps> = ({ playbackId }) => {
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={thumbnailUrl}
-      alt="Video Thumbnail"
-      className="thumbnail-image"
-      // Add className prop if needed
-    />
+    <img src={thumbnailUrl} alt="Video Thumbnail" />
   );
 };
 

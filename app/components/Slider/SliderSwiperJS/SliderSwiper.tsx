@@ -12,8 +12,7 @@ import { DataProp } from "@/app/data/data";
 import MuxThumbnail, {
   MuxThumbnailProps,
 } from "../../MuxThumbnail/MuxThumbnail";
-import MuxGIF from "../../MuxGIF/MuxGIF";
-
+import MuxThumbnailGIF from "../../MuxThumbnailGIF/MuxThumbnailGIF";
 interface SliderProps {
   items: DataProp[];
 }
@@ -136,11 +135,10 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
         >
           {isHovered ? (
             <div className="gif-container">
-              <div>
-                <MuxGIF
-                  src={`https://image.mux.com/${filteredItems[currentIndex]?.playbackId}/animated.gif?start=2`}
-                  alt={filteredItems[currentIndex]?.title}
-                  className="gif-frame"
+              <div className="gif-frame">
+                <MuxThumbnailGIF
+                  className="card-gif"
+                  playbackId={filteredItems[currentIndex]?.playbackId}
                 />
               </div>
             </div>

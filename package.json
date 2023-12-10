@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@mux/mux-node": "^7.3.3",
+    "@mux/mux-player": "^2.3.0",
+    "@mux/mux-player-react": "^2.3.0",
     "@mux/mux-video-react": "^0.8.1",
     "framer-motion": "^10.16.16",
     "next": "14.0.4",
