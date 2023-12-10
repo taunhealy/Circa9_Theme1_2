@@ -1,14 +1,13 @@
 "use client";
-
+/* eslint-disable @next/next/no-img-element */
 // Card.tsx
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import MuxThumbnail from "./MuxThumbnail/MuxThumbnail";
-import MuxGIF from "./MuxThumbnailGIF/MuxThumbnailGIF"; // Import your MuxGIF component
+import MuxThumbnailGIF from "./MuxThumbnailGIF/MuxThumbnailGIF";
 import "./card.scss";
 import { CardProps } from "../data/data";
-import MuxThumbnailGIF from "./MuxThumbnailGIF/MuxThumbnailGIF";
+
 interface FadeInWhenVisibleProps {
   children: React.ReactNode;
 }
@@ -58,9 +57,15 @@ const Card: React.FC<CardProps> = ({ itemsData }) => {
                   whileHover={{ opacity: 1, transition: { duration: 0.05 } }}
                 >
                   {hoveredIndex === index ? (
-                    <MuxThumbnailGIF playbackId={item.playbackId} />
+                    <MuxThumbnailGIF
+                      className="card-gif"
+                      playbackId={item.playbackId}
+                    />
                   ) : (
-                    <MuxThumbnail playbackId={item.playbackId} time={10} />
+                    <img
+                      src={`https://image.mux.com/${item.playbackId}/thumbnail.png?time=7`}
+                      alt="Video Thumbnail"
+                    />
                   )}
                 </motion.div>
               </div>

@@ -133,24 +133,13 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
           variants={brandFilterAnimation}
           custom={currentIndex}
         >
-          {isHovered ? (
-            <div className="gif-container">
-              <div className="gif-frame">
-                <MuxThumbnailGIF
-                  className="card-gif"
-                  playbackId={filteredItems[currentIndex]?.playbackId}
-                />
-              </div>
-            </div>
-          ) : (
-            <div className="thumbnail-container">
-              <MuxThumbnail
-                className="thumbnail-image"
-                playbackId={filteredItems[currentIndex]?.playbackId}
-                time={15}
-              />
-            </div>
-          )}
+          <div className="thumbnail-container">
+            <MuxThumbnail
+              className="thumbnail-image"
+              playbackId={filteredItems[currentIndex]?.playbackId}
+              time={15}
+            />
+          </div>
         </motion.div>
       </AnimatePresence>
 
