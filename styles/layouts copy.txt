@@ -1,0 +1,239 @@
+/* Layout styles */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.work-items {
+  display: grid;
+  grid-template-areas: "sidebar filter-items";
+}
+
+.filter-items {
+  display: flex;
+  position: relative;
+  grid-area: filter-items;
+}
+
+.sidebar {
+  display: flex;
+  position: relative;
+  align-self: auto;
+  grid-area: sidebar;
+}
+
+/* Other styles (buttons, etc.) */
+
+.btn-container {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: space-between; /* Equal spacing between items */
+  gap: 0.5em;
+  padding: 1em;
+  margin: 1em;
+  overflow: hidden;
+  background-color: none;
+  z-index: 5;
+}
+
+.btn-container button {
+  font-family: "Inter", sans-serif; /* Set Inter font family */
+  text-transform: uppercase;
+  background-color: transparent; /* Set background color to transparent */
+  color: #ffffff; /* Set text color */
+  border: none; /* Remove border */
+
+  cursor: pointer; /* Add pointer cursor on hover */
+  font-weight: normal; /* Set font weight to normal (not bold) by default */
+}
+
+.btn-container button.filter-btn {
+  font-family: "Inter", sans-serif;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-weight: normal;
+  transition: background-color 0.3s, color 0.3s, font-weight 0.3s; /* Add transition for smooth hover effect */
+}
+
+.btn-container button.filter-btn:hover,
+.btn-container button.filter-btn.active {
+  background-color: #2980b9; /* Change background color on hover or when active */
+  color: #ffffff; /* Change text color on hover or when active */
+  font-weight: bold; /* Set font weight to bold on hover or when active */
+}
+
+.layoutSingle {
+  --auto-grid-min-size: 12rem;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--auto-grid-min-size), 1fr)
+  );
+
+  padding: 0rem;
+
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.layoutSingle .item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  aspect-ratio: 3/2;
+  height: 100%;
+  width: 100%;
+  justify-self: center;
+}
+
+/* .layoutSingle .item:nth-child(1) {
+  grid-column-end: span 4;
+  aspect-ratio: 8/3; /* or any other desired aspect ratio */
+
+.layout2 {
+  --auto-grid-min-size: 12rem;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--auto-grid-min-size), 1fr)
+  );
+
+  padding: 0rem;
+
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.5rem;
+}
+/* Layout 3 item styles */
+.layout2 .item1,
+.layout2 .item2 {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children along the x-axis */
+  aspect-ratio: 4/5;
+  height: 100%;
+  width: 100%;
+}
+.layout3 {
+  --auto-grid-min-size: 12rem;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--auto-grid-min-size), 1fr)
+  );
+
+  padding: 0rem;
+
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.5rem;
+}
+/* Layout 3 item styles */
+.layout3 .item1,
+.layout3 .item2,
+.layout3 .item3 {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children along the x-axis */
+  aspect-ratio: 4/5;
+  height: 100%;
+  width: 100%;
+}
+
+//layout 4
+
+.layout4 {
+  --auto-grid-min-size: 12rem;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--auto-grid-min-size), 1fr)
+  );
+
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.layout4 .item1,
+.layout4 .item2,
+.layout4 .item3,
+.layout4 .item4 {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children along the x-axis */
+  aspect-ratio: 3/2;
+  height: 100%;
+  width: 100%;
+  justify-self: center;
+}
+.layout5 {
+  --auto-grid-min-size: 12rem;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--auto-grid-min-size), 1fr)
+  );
+
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.layout5 .item1,
+.layout5 .item2,
+.layout5 .item3,
+.layout5 .item4 {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children along the x-axis */
+  aspect-ratio: 3/2;
+  height: 100%;
+  width: 100%;
+  justify-self: center;
+}
+
+/* Additional styles for item content (adjust as needed) */
+.item-title {
+  position: absolute;
+  font-size: 12px;
+  color: white;
+  z-index: 2;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children along the x-axis */
+  aspect-ratio: 3/2;
+  height: 100%;
+  width: 100%;
+  justify-self: center;
+}

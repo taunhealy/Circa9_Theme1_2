@@ -1,0 +1,121 @@
+// ItemsLayout.tsx
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import Image from "next/image";
+import SliderSwiper from "./Slider/SliderSwiperJS/SliderSwiper";
+
+interface Item {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  img: string;
+  desc?: string;
+  director?: string;
+  producer?: string;
+  cinematographer?: string;
+  date: string;
+}
+
+interface ItemsLayoutProps {
+  itemsData: Item[];
+}
+
+interface LayoutConfig {
+  layoutClass: string;
+  itemClasses: string[];
+  numberOfItems: number;
+}
+
+const ItemsLayout: React.FC<ItemsLayoutProps> = ({ itemsData }) => {
+  const layoutRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const layoutItems = layoutRef.current?.querySelectorAll(".item");
+
+    if (layoutItems) {
+      const itemsArray = Array.from(layoutItems);
+      gsap.from(itemsArray, {
+        opacity: 0,
+        stagger: 0.2,
+        duration: 0.4,
+        ease: "power3.inOut",
+      });
+    }
+  }, [itemsData]);
+
+  const getLayoutConfig = (): LayoutConfig => {
+    const numberOfItems = itemsData.length;
+
+    if (numberOfItems <= 0 || numberOfItems > 15) {
+      return { layoutClass: "", itemClasses: [], numberOfItems: 0 };
+    }
+
+    const layoutClass =
+      numberOfItems <= 3 ? `layout${numberOfItems}` : "layoutSingle";
+    const itemClasses = Array.from(
+      { length: Math.min(numberOfItems, 21) }, // Limit to 4 items
+      (_, index) => `item${index + 1}`
+    );
+
+    return { layoutClass, itemClasses, numberOfItems };
+  };
+
+  const { layoutClass, itemClasses, numberOfItems } = getLayoutConfig();
+
+  const sortedItems = [...itemsData].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+  const recentItems = sortedItems.slice(0, 10);
+
+  return (
+    <div ref={layoutRef} className={`content-container ${layoutClass}`}>
+      {numberOfItems <= 3 ? (
+        recentItems.map((item, index) => {
+          const { id, title, img } = item;
+          const itemClass = itemClasses[index] || "";
+
+          const itemContainerClass =
+            layoutClass || itemClass
+              ? `${layoutClass} ${itemClass} item`
+              : "item";
+
+          return (
+            <div key={id} className={itemContainerClass}>
+              <Image
+                src={img}
+                alt={title}
+                width={600}
+                height={400}
+                className="image"
+              />
+              <div className="item-title">
+                <h2>{title}</h2>
+              </div>
+            </div>
+          );
+        })
+      ) : (
+        <Slider
+          items={recentItems.map((item, index) => (
+            <div key={index} className={`item${index + 1} item`}>
+              <Image
+                src={item.img}
+                alt={item.title}
+                width={600}
+                height={400}
+                className="image"
+              />
+              <div className="item-title">
+                <h2>{item.title}</h2>
+              </div>
+            </div>
+          ))}
+        />
+      )}
+    </div>
+  );
+};
+
+export default ItemsLayout;

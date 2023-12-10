@@ -1,0 +1,48 @@
+/* Style for the individual lines within the item lines container */
+
+/* Container for the item lines grid */
+.item-lines-container {
+  grid-area: lines; /* Position in the specified grid area */
+  position: relative; /* Use relative positioning */
+  display: flex; /* Flexbox layout for the container */
+  z-index: 0; /* Stacking order */
+  width: 10%; /* Width relative to the containing element */
+  align-items: center; /* Center content vertically */
+  gap: 2%; /* Spacing between items in the container */
+  justify-content: center; /* Center content horizontally */
+  padding: 0%; /* No padding */
+}
+
+.item-lines {
+  display: flex; /* Flexbox layout for item lines */
+  flex-direction: column; /* Arrange items in a column */
+  gap: 8px; /* Spacing between each line */
+  align-self: center; /* Center horizontally within the container */
+  width: 100%; /* Full width of the container */
+  transform-origin: center; /* Set the transformation origin to the center */
+}
+
+/* Active line style */
+
+/* Inactive line style */
+.item-line-image {
+  width: 18px; /* Width of inactive lines */
+  height: 8px; /* Height of inactive lines */
+  filter: grayscale(100%); /* Convert to black and white */
+  transform: translate(-50%, -50%); /* Center the ratio */
+}
+
+.item-ratio {
+  width: 22px;
+  height: 22px;
+  position: absolute; /* Use absolute positioning */
+  top: 50%; /* Position from the top */
+  left: 120%; /* Position from the right side of the active line */
+
+  display: flex;
+  font-family: Inter;
+  color: black;
+  justify-content: center;
+  font-size: 12px;
+  letter-spacing: 3px;
+}

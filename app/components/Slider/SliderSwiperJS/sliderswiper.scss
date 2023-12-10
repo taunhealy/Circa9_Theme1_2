@@ -1,0 +1,206 @@
+// sliderswiper.css
+
+.item-background-container {
+  height: 100vh;
+  width: 100%;
+  background-color: white;
+  display: grid;
+  grid-template-areas:
+    "... titles ..."
+    "brands content lines"
+    "... credits arrows";
+  grid-template-columns: 1fr 2.5fr 1fr;
+  grid-template-rows: 1fr 2.5fr 1fr;
+  overflow: hidden;
+}
+
+.item-titles {
+  grid-area: titles;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  transform: translateX(0%);
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.brand-filter-sidebar {
+  grid-area: brands;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px; /* Adjust as needed */
+  z-index: 100;
+}
+
+.production-title-container {
+  grid-area: credits;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  right: 21%;
+}
+
+.item-image-container {
+  grid-area: content;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.item-media-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.nextprev-button-wrapper {
+  grid-area: arrows;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  right: 20%;
+
+  background-color: transparent;
+  gap: 18px; /* Adjust as needed */
+}
+
+.item-credits {
+  grid-area: credits;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  color: rgb(10, 10, 10);
+  font-family: Poppins;
+  letter-spacing: 0.18em;
+  font-style: bold;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/*
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(0.875);
+  aspect-ratio: 8/10;
+}
+*/
+
+.brand-title {
+  color: rgba(158, 158, 158, 1);
+  font-family: Poppins;
+  letter-spacing: 3px;
+  font-style: bold;
+  font-weight: 500;
+  font-size: clamp(12px, 50%, 70%);
+  place-content: flex-start;
+  align-items: left;
+  text-align: left;
+}
+
+.item-title {
+  text-transform: uppercase;
+  color: rgb(10, 10, 10);
+  font-family: Poppins;
+  letter-spacing: 0.18em;
+  font-style: bold;
+  font-weight: 600;
+  font-size: clamp(25px, 100%, 100%);
+}
+
+.button-prev,
+.button-next {
+  background-color: transparent;
+  border: none;
+}
+
+.button-next {
+  object-fit: contain; /* Maintain aspect ratio */
+  cursor: pointer;
+  transform: scale(1.5);
+}
+
+.button-prev {
+  object-fit: contain;
+  cursor: pointer;
+  transform: scale(1);
+}
+
+.production-title {
+  text-transform: uppercase;
+  color: rgb(10, 10, 10);
+  font-family: Poppins;
+  letter-spacing: 0.18em;
+  font-style: bold;
+  font-weight: 450;
+  font-size: clamp(12px, 14px, 100%);
+}
+
+.item-media-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.mux-video-player-hover {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.thumbnail-container {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4/6;
+  overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gif-container {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4/6;
+  overflow: hidden;
+  max-width: 100%; /* Adjust as needed */
+  max-height: 100%; /* Adjust as needed */
+}
+
+.gif-frame {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gif-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+.mux-video-player-thumbnail {
+  width: 100%;
+  height: 100%;
+    transform: scale(0.875);
+}
+
+*/

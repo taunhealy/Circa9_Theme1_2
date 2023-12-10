@@ -1,0 +1,76 @@
+"use client";
+
+import { useState, useMemo, useEffect } from "react";
+
+interface Item {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  img: string;
+  desc?: string;
+  director?: string;
+  producer?: string;
+  cinematographer?: string;
+  date: string;
+}
+
+interface UseCategoriesHook {
+  categories: string[];
+  filteredItems: Item[];
+  allItems: Item[];
+  handleFilterChange: (category: string) => void;
+  currentIndex: number;
+  nextItem: () => void;
+  prevItem: () => void;
+}
+
+const useCategories = (itemsData: Item[]): UseCategoriesHook => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("Recent");
+
+  useEffect(() => {
+    setSelectedCategory("Recent");
+  }, []); // Set "Recent" as default upon page load
+
+  // Get unique categories including "Recent"
+  const allCategories = useMemo(() => {
+    const categoriesArray: string[] = [];
+
+    itemsData.forEach((item) => {
+      if (item.category !== "all" && !categoriesArray.includes(item.category)) {
+        categoriesArray.push(item.category);
+      }
+    });
+
+    return ["Recent", ...categoriesArray];
+  }, [itemsData]);
+
+  // Get filtered and sorted items based on the selected category
+  const filteredItems = useMemo(() => {
+    if (selectedCategory === "Recent") {
+      // Filter out items without a valid date and then sort
+      const validDateItems = itemsData.filter((item) => item.date);
+      const sortedRecentItems = validDateItems
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 9); // Cap at 9 items for Recent
+      console.log("Sorted Recent Items:", sortedRecentItems);
+      return sortedRecentItems;
+    } else {
+      return itemsData.filter((item) => item.category === selectedCategory);
+    }
+  }, [selectedCategory, itemsData]);
+
+  // Handle category change, defaulting to "Recent" if null
+  const handleFilterChange = (category: string | null): void => {
+    setSelectedCategory(category ?? "Recent"); // If null, default to "Recent"
+  };
+
+  return {
+    categories: allCategories,
+    filteredItems,
+    allItems: itemsData,
+    handleFilterChange,
+  };
+};
+
+export default useCategories;

@@ -1,0 +1,70 @@
+"use client"
+
+import { useState, useMemo } from "react";
+
+interface Item {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  img: string;
+  desc?: string;
+  director?: string;
+  producer?: string;
+  cinematographer?: string;
+  date: string;
+}
+
+interface UseCategoriesHook {
+  categories: string[];
+  filteredItems: Item[];
+  allItems: Item[];
+  handleFilterChange: (category: string) => void;
+}
+
+const useCategories = (itemsData: Item[]): UseCategoriesHook => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  const allCategories = useMemo(() => {
+    const categoriesArray: string[] = [];
+    itemsData.forEach((item) => {
+      if (!categoriesArray.includes(item.category)) {
+        categoriesArray.push(item.category);
+      }
+    });
+
+    // Add "Recent" category
+    categoriesArray.push("Recent");
+
+    return ["all", ...categoriesArray];
+  }, [itemsData]);
+
+  const filteredItems = useMemo(() => {
+    if (selectedCategory === "all") {
+      return itemsData;
+    } else if (selectedCategory === "Recent") {
+      // Filter out items without a valid date and then sort
+      const validDateItems = itemsData.filter((item) => item.date);
+      const sortedRecentItems = validDateItems
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 9); // Cap at 9 items for Recent
+      console.log("Sorted Recent Items:", sortedRecentItems);
+      return sortedRecentItems;
+    } else {
+      return itemsData.filter((item) => item.category === selectedCategory);
+    }
+  }, [selectedCategory, itemsData]);
+
+  const handleFilterChange = (category: string): void => {
+    setSelectedCategory(category);
+  };
+
+  return {
+    categories: allCategories,
+    filteredItems,
+    allItems: itemsData,
+    handleFilterChange,
+  };
+};
+
+export default useCategories;

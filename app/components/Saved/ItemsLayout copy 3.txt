@@ -1,0 +1,64 @@
+import React from "react";
+
+interface Item {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  img: string;
+  desc?: string;
+  director?: string;
+  producer?: string;
+  cinematographer?: string;
+  date: string;
+}
+
+interface ItemsLayoutProps {
+  itemsData: Item[];
+}
+
+const ItemsLayout: React.FC<ItemsLayoutProps> = ({ itemsData }) => {
+  const getLayoutConfig = () => {
+    const numberOfItems = itemsData.length;
+
+    if (numberOfItems <= 0 || numberOfItems > 9) {
+      return { layoutClass: "", itemClasses: [] };
+    }
+
+    const layoutClass = numberOfItems <= 5 ? `layout${numberOfItems}` : "layoutSingle";
+    const itemClasses = Array.from({ length: numberOfItems }, (_, index) => `item${index + 1}`);
+
+    return { layoutClass, itemClasses };
+  };
+
+  const { layoutClass, itemClasses } = getLayoutConfig();
+
+  // Sort items by date in descending order (most recent to oldest)
+  const sortedItems = [...itemsData].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  // Take the 10 most recent items
+  const recentItems = sortedItems.slice(0, 10);
+
+  return (
+    <div className={`content-container ${layoutClass}`}>
+      {recentItems.map((item, index) => {
+        const { id, title, img } = item;
+        const itemClass = itemClasses[index] || ""; // Default to an empty string if not specified
+
+        // Conditionally apply layoutClass and itemClass only if they are not empty
+        const itemContainerClass = layoutClass || itemClass ? `${layoutClass} ${itemClass} item` : "item";
+
+        return (
+          <div key={id} className={itemContainerClass}>
+            <img src={img} alt={title} className="image" />
+            <div className="item-title">
+              <h2>{title}</h2>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default ItemsLayout;

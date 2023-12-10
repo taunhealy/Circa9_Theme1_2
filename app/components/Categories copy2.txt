@@ -1,0 +1,82 @@
+// Categories.tsx
+"use client";
+
+import React, { useState, useMemo, useEffect } from "react";
+
+interface Item {
+  id: number;
+  title: string;
+  brand: string;
+  img: string;
+  desc?: string;
+  director?: string;
+  producer?: string;
+  cinematographer?: string;
+  date: string;
+}
+
+interface CategoriesProps {
+  itemsData: Item[];
+  onbrandChange: (filteredItems: Item[]) => void;
+}
+
+const Categories: React.FC<CategoriesProps> = ({
+  itemsData,
+  onbrandChange,
+}) => {
+  const [selectedbrand, setSelectedbrand] = useState<string | null>(
+    "Recent"
+  );
+
+  useEffect(() => {
+    setSelectedbrand("Recent");
+  }, []); // Set "Recent" as default upon page load
+
+  // Get unique categories including "Recent"
+  const categories = useMemo(() => {
+    const categoriesArray: string[] = [];
+
+    itemsData.forEach((item) => {
+      if (item.brand !== "all" && !categoriesArray.includes(item.brand)) {
+        categoriesArray.push(item.brand);
+      }
+    });
+
+    return ["Recent", ...categoriesArray];
+  }, [itemsData]);
+
+  // Handle brand change, defaulting to "Recent" if null
+  const handleFilterChange = (brand: string | null): void => {
+    console.log("brand Button Clicked:", brand);
+    setSelectedbrand(brand);
+    // You can perform additional logic here if needed
+    // For now, just pass the filtered items to the parent component
+    const filteredItems = getFilteredItems(brand);
+    onbrandChange(filteredItems);
+  };
+
+  // Get filtered and sorted items based on the selected brand
+  const getFilteredItems = (brand: string | null): Item[] => {
+    if (brand === "Recent") {
+      // Filter out items without a valid date and then sort
+      const validDateItems = itemsData.filter((item) => item.date);
+      return validDateItems
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 9); // Cap at 9 items for Recent
+    } else {
+      return itemsData.filter((item) => item.brand === brand);
+    }
+  };
+
+  return (
+    <div className="categories">
+      {categories.map((brand) => (
+        <button key={brand} onClick={() => handleFilterChange(brand)}>
+          {brand}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+export default Categories;

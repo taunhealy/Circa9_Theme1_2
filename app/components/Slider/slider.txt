@@ -1,0 +1,98 @@
+/* slider.css */
+
+.slider-container {
+  display: flex;
+  overflow: hidden; /* Add overflow: hidden to hide items outside the container */
+  height: 150px;
+  width: 80%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.slider {
+  height: 80%;
+  display: flex;
+  flex-grow: 1;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out; /* Change the transition property to opacity */
+}
+
+.left-button,
+.right-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  place-content: center;
+}
+
+.left-button {
+  left: 0;
+  z-index: 7;
+}
+
+.right-button {
+  right: 0;
+}
+
+.left-button .text,
+.right-button .text {
+  font-size: 1.5rem;
+}
+
+.left-button:hover .text,
+.right-button:hover .text {
+  font-weight: bold;
+}
+
+.slider-container .left-button:hover,
+.slider-container .right-button:hover {
+  background-color: #2980b9;
+}
+
+.text {
+  display: inline-block;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.layoutall {
+  --auto-grid-min-size: 12rem;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--auto-grid-min-size), 1fr)
+  );
+
+  padding: 0rem;
+
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.layoutall.item {
+  position: relative;
+  display: flex;
+  flex-direction: row; /* Stack children vertically */
+  align-items: center; /* Center children along the x-axis */
+  aspect-ratio: 3/2;
+  height: 100%;
+  width: 100%;
+  justify-self: center;
+}
+
+.layoutall .image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.layoutall .item-title {
+  position: absolute;
+  font-size: 12px;
+  color: white;
+  z-index: 2;
+}

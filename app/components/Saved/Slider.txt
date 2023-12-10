@@ -1,0 +1,60 @@
+// Slider.tsx
+import React, { useState, useRef } from "react";
+import "./slider.scss"; // Import external CSS file
+
+interface SliderProps {
+  items: JSX.Element[];
+}
+
+const Slider: React.FC<SliderProps> = ({ items }) => {
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [sliderLeft, setSliderLeft] = useState(0);
+
+  const handleMouseDown: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    setIsDragging(true);
+    setStartX(e.clientX);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      const x = e.clientX - startX;
+      setSliderLeft((prevLeft) => {
+        const newLeft = prevLeft + x;
+        return Math.max(0, Math.min(newLeft, getMaxSliderLeft()));
+      });
+      setStartX(e.clientX);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const getMaxSliderLeft = () => {
+    if (sliderRef.current) {
+      return sliderRef.current.clientWidth - sliderRef.current.scrollWidth;
+    }
+    return 0;
+  };
+
+  return (
+    <div
+      ref={sliderRef}
+      className="slider-container"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+    >
+      <div
+        className={`slider`}
+        style={{ transform: `translateX(-${sliderLeft}px)` }}
+      >
+        {items}
+      </div>
+    </div>
+  );
+};
+
+export default Slider;

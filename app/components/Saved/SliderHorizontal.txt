@@ -1,0 +1,76 @@
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger"; // Import ScrollTrigger from gsap
+import Image from "next/image";
+
+// Register ScrollTrigger with gsap
+gsap.registerPlugin(ScrollTrigger);
+
+interface Item {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  img: string;
+  desc?: string;
+  director?: string;
+  producer?: string;
+  cinematographer?: string;
+  date: string;
+}
+
+interface ItemsLayoutProps {
+  itemsData: Item[];
+}
+
+const SliderHorizontal: React.FC<ItemsLayoutProps> = ({ itemsData }) => {
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sortedItems = [...itemsData].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+    const recentItems = sortedItems.slice(0, 10);
+
+    const sliderContainer = sliderRef.current;
+    const sliderItems = sliderContainer?.querySelectorAll(".horizontal__item");
+
+    if (sliderItems && sliderContainer) {
+      gsap.to(sliderItems, {
+        xPercent: -100 * (sliderItems.length - 1),
+        ease: "sine.out",
+        scrollTrigger: {
+          trigger: sliderContainer,
+          pin: true,
+          scrub: 3,
+          snap: 1 / (sliderItems.length - 1),
+          end: `+=${sliderContainer.offsetWidth}`,
+        },
+      });
+    }
+  }, [itemsData]);
+
+  return (
+    <div ref={sliderRef} className="slider">
+      <section className="horizontal">
+        <div className="container">
+          <div className="horizontal__content">
+            {itemsData.map((item, index) => {
+              const { id, title, img } = item;
+
+              return (
+                <div key={id} className="horizontal__item">
+                  <div className="horizontal__num">{index + 1}</div>
+                  <Image src={img} alt={title} width={200} height={200} />
+                  <div className="horizontal__title">{title}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default SliderHorizontal;

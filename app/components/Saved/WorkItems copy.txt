@@ -1,0 +1,33 @@
+// WorkItems.tsx
+"use client";
+
+import React from "react";
+import SliderHorizontal from "./SliderHorizontal";
+import Categories from "./Categories";
+import ItemsData from "@/app/data/data";
+import useCategories from "@/app/hooks/useCategories";
+import "@/styles/styles.scss";
+import "@/styles/layouts.scss";
+
+function WorkItems() {
+  const { categories, filteredItems, handleFilterChange, allItems } = useCategories(
+    ItemsData
+  );
+
+  console.log("Filtered Items:", filteredItems); // Log the filtered items
+
+  return (
+    <>
+      <div className="work-items">
+        <div className="sidebar">
+          <Categories filterFunction={handleFilterChange} categories={categories} />
+        </div>
+        <div className="filter-items">
+          <SliderHorizontal itemsData={filteredItems} />
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default WorkItems;
