@@ -13,23 +13,6 @@ interface CarouselHandlersProps {
   };
 }
 
-export const thumbnailAnimation = async (controls: any) => {
-  const animation: TargetAndTransition = {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.27, ease: "easeInOut" },
-  };
-
-  const exitAnimation: TargetAndTransition = {
-    opacity: 0,
-    scale: 0.99,
-    transition: { duration: 0.27, ease: "easeInOut" },
-  };
-
-  await controls.start(animation);
-  await controls.start(exitAnimation);
-};
-
 export const useCarouselHandlers = ({
   totalItems,
   setCurrentIndex,
@@ -40,8 +23,8 @@ export const useCarouselHandlers = ({
 
   const handleNextItem = useCallback(() => {
     const animation = {
-      opacity: 0.3,
-      transition: { duration: 0.1, ease: "easeInOut" },
+      opacity: 0,
+      transition: { duration: 0.2, ease: "easeInOut" },
     };
 
     const nextAnimation = {
@@ -54,9 +37,6 @@ export const useCarouselHandlers = ({
       // Update the index and start the second animation
       setCurrentIndex((prevIndex: number) => (prevIndex + 1) % totalItems);
       (contentControls?.start || defaultControls.start)(nextAnimation);
-
-      // Trigger the thumbnail animation
-      thumbnailAnimation(contentControls || defaultControls);
     });
 
     // Arrow bounce effect
@@ -90,9 +70,6 @@ export const useCarouselHandlers = ({
         (prevIndex: number) => (prevIndex - 1 + totalItems) % totalItems
       );
       (contentControls?.start || defaultControls.start)(nextAnimation);
-
-      // Trigger the thumbnail animation
-      thumbnailAnimation(contentControls || defaultControls);
     });
 
     // Arrow bounce effect
