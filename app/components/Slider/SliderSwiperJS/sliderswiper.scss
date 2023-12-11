@@ -164,6 +164,7 @@
   height: 100%;
   aspect-ratio: 4/6;
   overflow: hidden; /* Ensure content doesn't overflow */
+  transform: scale(0.9);
 }
 
 .thumbnail-image {

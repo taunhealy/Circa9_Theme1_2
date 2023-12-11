@@ -65,6 +65,7 @@ const Card: React.FC<CardProps> = ({ itemsData }) => {
                     <img
                       src={`https://image.mux.com/${item.playbackId}/thumbnail.png?time=7`}
                       alt="Video Thumbnail"
+                      className="card-image"
                     />
                   )}
                 </motion.div>

@@ -1,18 +1,15 @@
 "use client";
-
+// Import necessary modules and components
 import React, { useState, useMemo, useEffect, useCallback } from "react";
-
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import "./sliderswiper.scss";
 import BrandFilterButton from "../../Buttons/BrandFilterButtons";
 import Cursor from "../../Cursors/Cursor";
 import ItemLines from "../../ItemLines/ItemLines";
-import MuxVideoPlayer from "../../MuxVideo/MuxVideoPlayer";
+import MuxThumbnail from "../../MuxThumbnail/MuxThumbnail";
+import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import { DataProp } from "@/app/data/data";
-import MuxThumbnail, {
-  MuxThumbnailProps,
-} from "../../MuxThumbnail/MuxThumbnail";
-import MuxThumbnailGIF from "../../MuxThumbnailGIF/MuxThumbnailGIF";
+
 interface SliderProps {
   items: DataProp[];
 }
@@ -59,26 +56,19 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
     );
   }, [filteredItems]);
 
-  const brandFilterAnimation = {
-    initial: { opacity: 0, y: -10 },
-    hidden: { opacity: 0, y: 0 },
-    show: {
-      transition: {
-        staggerChildren: 0.34,
-        duration: 1.7,
-      },
-      opacity: 1,
-      y: 0,
-    },
-    exit: {
-      opacity: 0,
-      y: 0,
-      transition: {
-        ease: "easeInOut",
-        duration: 1,
-      },
-    },
-  };
+  const titleControls = useAnimation();
+  const imageControls = useAnimation();
+
+  useEffect(() => {
+    const animation = {
+      opacity: [0, 1],
+      scale: [0.8, 1],
+      transition: { duration: 0.5 },
+    };
+
+    titleControls.start(animation);
+    imageControls.start(animation);
+  }, [titleControls, imageControls, selectedBrand]);
 
   return (
     <div className="item-background-container">
@@ -86,8 +76,8 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
         <motion.section
           key={selectedBrand}
           className="item-titles"
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 0, scale: 0.5 }} // Updated initial state
+          animate={titleControls}
           exit={{ opacity: 0, y: 0 }}
           transition={{ duration: 1.5 }}
         >
@@ -105,9 +95,8 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
           onMouseOver={() => setShowCursor(true)}
           onMouseLeave={() => setShowCursor(false)}
           initial="hidden"
-          animate="show"
+          animate={imageControls}
           exit="exit"
-          variants={brandFilterAnimation}
           key="brand-filter"
         >
           {brands.map((brand) => (
@@ -127,11 +116,9 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
           onMouseLeave={() => setIsHovered(false)}
           key={selectedBrand}
           className="item-image-container"
-          initial="hidden"
-          animate="show"
-          exit="exit"
-          variants={brandFilterAnimation}
-          custom={currentIndex}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={imageControls}
+          exit={{ opacity: 0 }}
         >
           <div className="thumbnail-container">
             <MuxThumbnail
@@ -146,9 +133,8 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
       <AnimatePresence mode="wait">
         <motion.div
           initial="hidden"
-          animate="show"
+          animate={titleControls}
           exit="exit"
-          variants={brandFilterAnimation}
           className="nextprev-button-wrapper"
         >
           <button
@@ -157,7 +143,7 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
             className="button-prev"
             onClick={handlePrevItem}
           >
-            {/* ... (your existing SVG for the previous button) */}
+            <ChevronLeftCircle size={17} strokeWidth={2.5} stroke="black" />
           </button>
           <button
             title="button-next"
@@ -165,7 +151,7 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
             className="button-next"
             onClick={handleNextItem}
           >
-            {/* ... (your existing SVG for the next button) */}
+            <ChevronRightCircle size={17} strokeWidth={2.5} stroke="black" />
           </button>
         </motion.div>
       </AnimatePresence>
@@ -178,7 +164,6 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
             initial="hidden"
             animate="show"
             exit="exit"
-            variants={brandFilterAnimation}
           >
             {filteredItems[currentIndex]?.production && (
               <div className="production-title">
@@ -187,16 +172,17 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
             )}
           </motion.div>
         )}
-        <motion.div
-          key="item-lines"
-          className="item-lines-container"
-          initial="hidden"
-          animate="show"
-          exit="exit"
-          variants={brandFilterAnimation}
-        >
-          <ItemLines items={filteredItems} activeIndex={currentIndex} />
-        </motion.div>
+        <AnimatePresence>
+          <motion.div
+            key={selectedBrand}
+            className="item-lines-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <ItemLines items={filteredItems} activeIndex={currentIndex} />
+          </motion.div>
+        </AnimatePresence>
       </AnimatePresence>
     </div>
   );

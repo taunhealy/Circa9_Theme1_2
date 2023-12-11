@@ -1,8 +1,10 @@
+"use client";
+
 // ItemLines.jsx
 
-import React from "react";
-import { motion } from "framer-motion";
-import Image from "next/image"; // Import the Image component
+import React, { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { Minus } from "lucide-react";
 import "./ItemLines.scss";
 
 interface ItemLinesProps {
@@ -18,26 +20,62 @@ interface Item {
 }
 
 const ItemLines: React.FC<ItemLinesProps> = ({ items, activeIndex }) => {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (controls) {
+      // Only apply initial animation on mount
+      controls.start({
+        opacity: 1,
+        scale: 1,
+        transition: { duration: 0.5 },
+      });
+    }
+  }, [controls]);
+
+  useEffect(() => {
+    // Trigger animation when activeIndex changes
+    controls.start({
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.5 },
+    });
+  }, [activeIndex, controls]);
+
   return (
-    <div className="item-lines">
+    <motion.div
+      className="item-lines"
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={controls}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       {items.map((item, index) => (
         <motion.div
           key={item.id}
           className={`item-line-image ${index === activeIndex ? "active" : ""}`}
           initial={{ scale: 0.5, opacity: 0.5 }}
-          animate={{ scale: index === activeIndex ? 0.7 : 0.3, opacity: 1 }}
+          animate={{
+            scale: index === activeIndex ? 0.7 : 0.3,
+            opacity: 1,
+          }}
+          transition={{ duration: 2 }} // Adjust the duration as needed
         >
-          {/* Replace motion.img with Image component */}
-          <Image
-            src={item.img}
-            alt={item.title}
-            width={25} // Set your desired width
-            height={5} // Set your desired height
-          />
+          <Minus size={16} strokeWidth={1.5} stroke="black" />
         </motion.div>
       ))}
-      <div className="item-ratio">{`${activeIndex + 1}/${items.length}`}</div>
-    </div>
+      <motion.div
+        className="item-ratio"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+        }}
+        transition={{ duration: 1 }}
+      >
+        {`${activeIndex + 1}/${items.length}`}
+      </motion.div>
+    </motion.div>
   );
 };
 
