@@ -6,10 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import BrandFilterButton from "../../Buttons/BrandFilterButtons";
 import Cursor from "../../Cursors/Cursor";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
-import { useCarouselHandlers } from "../carouselHandlers";
+import { useCarouselHandlers } from "./carouselHandlers";
 import { DataProp } from "@/app/data/data";
 import "./sliderswiper.scss";
 import MuxThumbnail from "../../MuxThumbnail/MuxThumbnail";
+import { useAnimation } from "framer-motion";
 
 interface SliderProps {
   items: DataProp[];
@@ -43,11 +44,13 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
 
   // Assuming you have the totalItems value available
   const totalItems = filteredItems.length;
+  const arrowControls = useAnimation();
 
   // Usage of useCarouselHandlers hook
   const { handleNextItem, handlePrevItem } = useCarouselHandlers({
-    totalItems,
-    setCurrentIndex, // Assuming setCurrentIndex is defined somewhere in your component
+    totalItems: filteredItems.length,
+    setCurrentIndex,
+    arrowControls,
   });
 
   return (
@@ -117,22 +120,27 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
           exit={{ opacity: 0 }}
           className="nextprev-button-wrapper"
         >
-          <button
+          {/* Previous Button */}
+          <motion.button
             title="button-prev"
             type="button"
             className="button-prev"
             onClick={handlePrevItem}
+            whileHover={{ scale: 1.3 }}
           >
             <ChevronLeftCircle size={17} strokeWidth={2.5} stroke="black" />
-          </button>
-          <button
+          </motion.button>
+
+          {/* Next Button */}
+          <motion.button
             title="button-next"
             type="button"
             className="button-next"
             onClick={handleNextItem}
+            whileHover={{ scale: 1.3 }}
           >
             <ChevronRightCircle size={17} strokeWidth={2.5} stroke="black" />
-          </button>
+          </motion.button>
         </motion.div>
       </AnimatePresence>
 
