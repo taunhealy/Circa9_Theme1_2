@@ -43,7 +43,7 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
   const fadeOut = useMemo(
     () => ({
       opacity: 0,
-      transition: { duration: 1.5 },
+      transition: { duration: 0.2 },
     }),
     []
   );
@@ -51,21 +51,21 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
   useEffect(() => {
     const fadeIn = {
       opacity: 1,
-      transition: { duration: 1.5 },
+      transition: { duration: 0.6 },
     };
 
     controls.start(fadeIn);
   }, [controls, selectedBrand]);
 
-  const handleFilterChange = useCallback(
-    async (brand: string | null): Promise<void> => {
-      await controls.start(fadeOut).then(() => {
-        setSelectedBrand((prevBrand) => brand ?? prevBrand);
-        setCurrentIndex(0);
-      });
-    },
-    [controls, fadeOut]
-  );
+    const handleFilterChange = useCallback(
+      async (brand: string | null): Promise<void> => {
+        await controls.start(fadeOut).then(() => {
+          setSelectedBrand((prevBrand) => brand ?? prevBrand);
+          setCurrentIndex(0);
+        });
+      },
+      [controls, fadeOut]
+    );
 
   const handleNextItem = useCallback(() => {
     controls.start(fadeOut).then(() => {
@@ -140,7 +140,7 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
             <MuxThumbnail
               className="thumbnail-image"
               playbackId={filteredItems[currentIndex]?.playbackId}
-              time={15}
+              time={5}
             />
           </div>
         </motion.div>
