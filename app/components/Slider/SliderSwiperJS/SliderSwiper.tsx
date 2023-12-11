@@ -1,5 +1,4 @@
 "use client";
-// Import necessary modules and components
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import "./sliderswiper.scss";
@@ -18,7 +17,6 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedBrand, setSelectedBrand] = useState<string | null>("Recent");
   const [showCursor, setShowCursor] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   const brands = useMemo(() => {
     const uniqueBrands = Array.from(
@@ -40,35 +38,52 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
     }
   }, [selectedBrand, items]);
 
-  const handleFilterChange = useCallback((brand: string | null): void => {
-    setSelectedBrand(brand);
-    setCurrentIndex(0);
-  }, []);
+  const controls = useAnimation();
 
-  const handleNextItem = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % filteredItems.length);
-  }, [filteredItems]);
-
-  const handlePrevItem = useCallback(() => {
-    setCurrentIndex(
-      (prevIndex) =>
-        (prevIndex - 1 + filteredItems.length) % filteredItems.length
-    );
-  }, [filteredItems]);
-
-  const titleControls = useAnimation();
-  const imageControls = useAnimation();
+  const fadeOut = useMemo(
+    () => ({
+      opacity: 0,
+      transition: { duration: 1.5 },
+    }),
+    []
+  );
 
   useEffect(() => {
-    const animation = {
-      opacity: [0, 1],
-      scale: [0.8, 1],
-      transition: { duration: 0.5 },
+    const fadeIn = {
+      opacity: 1,
+      transition: { duration: 1.5 },
     };
 
-    titleControls.start(animation);
-    imageControls.start(animation);
-  }, [titleControls, imageControls, selectedBrand]);
+    controls.start(fadeIn);
+  }, [controls, selectedBrand]);
+
+  const handleFilterChange = useCallback(
+    async (brand: string | null): Promise<void> => {
+      await controls.start(fadeOut).then(() => {
+        setSelectedBrand((prevBrand) => brand ?? prevBrand);
+        setCurrentIndex(0);
+      });
+    },
+    [controls, fadeOut]
+  );
+
+  const handleNextItem = useCallback(() => {
+    controls.start(fadeOut).then(() => {
+      setCurrentIndex((prevIndex) => {
+        controls.start({ opacity: 1 });
+        return (prevIndex + 1) % filteredItems.length;
+      });
+    });
+  }, [controls, filteredItems, fadeOut]);
+
+  const handlePrevItem = useCallback(() => {
+    controls.start(fadeOut).then(() => {
+      setCurrentIndex((prevIndex) => {
+        controls.start({ opacity: 1 });
+        return (prevIndex - 1 + filteredItems.length) % filteredItems.length;
+      });
+    });
+  }, [controls, filteredItems, fadeOut]);
 
   return (
     <div className="item-background-container">
@@ -76,9 +91,9 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
         <motion.section
           key={selectedBrand}
           className="item-titles"
-          initial={{ opacity: 0, y: 0, scale: 0.5 }} // Updated initial state
-          animate={titleControls}
-          exit={{ opacity: 0, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={controls}
+          exit={{ opacity: 0 }}
           transition={{ duration: 1.5 }}
         >
           {showCursor && <Cursor setShowCursor={setShowCursor} key="cursor" />}
@@ -89,15 +104,16 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
         </motion.section>
       </AnimatePresence>
 
+      {/* ... (other components) */}
+
       <AnimatePresence mode="wait">
         <motion.div
           className="brand-filter-sidebar"
           onMouseOver={() => setShowCursor(true)}
           onMouseLeave={() => setShowCursor(false)}
-          initial="hidden"
-          animate={imageControls}
-          exit="exit"
-          key="brand-filter"
+          initial={{ opacity: 0 }}
+          animate={controls}
+          exit={{ opacity: 0 }}
         >
           {brands.map((brand) => (
             <BrandFilterButton
@@ -110,14 +126,14 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
         </motion.div>
       </AnimatePresence>
 
+      {/* ... (other components) */}
+
       <AnimatePresence mode="wait">
         <motion.div
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
           key={selectedBrand}
           className="item-image-container"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={imageControls}
+          initial={{ opacity: 0 }}
+          animate={controls}
           exit={{ opacity: 0 }}
         >
           <div className="thumbnail-container">
@@ -130,11 +146,13 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
         </motion.div>
       </AnimatePresence>
 
+      {/* ... (other components) */}
+
       <AnimatePresence mode="wait">
         <motion.div
-          initial="hidden"
-          animate={titleControls}
-          exit="exit"
+          initial={{ opacity: 0 }}
+          animate={controls}
+          exit={{ opacity: 0 }}
           className="nextprev-button-wrapper"
         >
           <button
@@ -156,34 +174,7 @@ const SliderSwiperWrapper: React.FC<SliderProps> = ({ items }) => {
         </motion.div>
       </AnimatePresence>
 
-      <AnimatePresence>
-        {filteredItems.length > 0 && (
-          <motion.div
-            key="production-title"
-            className="production-title-container"
-            initial="hidden"
-            animate="show"
-            exit="exit"
-          >
-            {filteredItems[currentIndex]?.production && (
-              <div className="production-title">
-                {filteredItems[currentIndex]?.production}
-              </div>
-            )}
-          </motion.div>
-        )}
-        <AnimatePresence>
-          <motion.div
-            key={selectedBrand}
-            className="item-lines-container"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <ItemLines items={filteredItems} activeIndex={currentIndex} />
-          </motion.div>
-        </AnimatePresence>
-      </AnimatePresence>
+      {/* ... (other components) */}
     </div>
   );
 };
