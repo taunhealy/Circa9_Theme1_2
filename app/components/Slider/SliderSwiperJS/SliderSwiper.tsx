@@ -35,16 +35,24 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
 
   const filteredItems = useMemo(() => {
     if (selectedBrand === "Recent") {
+      // Use the correct logic for sorting and slicing
       return items
         .filter((item) => item.date)
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, 9);
     } else {
+      // Use the correct logic for filtering items by brand
       return items.filter((item) => item.brand === selectedBrand);
     }
   }, [selectedBrand, items]);
 
-  const totalItems = filteredItems.length;
+  const totalItems = useMemo(() => {
+    // Use the correct logic for getting the total number of brand items
+    return selectedBrand === "Recent"
+      ? filteredItems.length
+      : items.filter((item) => item.brand === selectedBrand).length;
+  }, [selectedBrand, items, filteredItems]);
+
   const arrowControls = useAnimation();
 
   const { handleNextPrevItems } = useNextPrevHandlers({
@@ -166,7 +174,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
         </motion.div>
       </AnimatePresence>
       <div className="item-lines-container">
-        <ItemLines items={items} activeIndex={activeIndex} />
+        <ItemLines items={filteredItems} activeIndex={activeIndex} />
       </div>
     </div>
   );
