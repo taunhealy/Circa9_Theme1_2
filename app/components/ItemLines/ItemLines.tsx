@@ -1,8 +1,6 @@
-"use client";
-
 // ItemLines.jsx
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { Minus } from "lucide-react";
 import "./ItemLines.scss";
@@ -22,19 +20,22 @@ interface Item {
 const ItemLines: React.FC<ItemLinesProps> = ({ items, activeIndex }) => {
   const controls = useAnimation();
 
+  const lines = useMemo(() => {
+    return items.map((item, index) => ({
+      id: item.id,
+      isActive: index === activeIndex,
+    }));
+  }, [items, activeIndex]);
+
   useEffect(() => {
-    if (controls) {
-      // Only apply initial animation on mount
-      controls.start({
-        opacity: 1,
-        scale: 1,
-        transition: { duration: 0.8 },
-      });
-    }
+    controls.start({
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.8 },
+    });
   }, [controls]);
 
   useEffect(() => {
-    // Trigger animation when activeIndex changes
     controls.start({
       opacity: 1,
       scale: 1,
@@ -50,13 +51,13 @@ const ItemLines: React.FC<ItemLinesProps> = ({ items, activeIndex }) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {items.map((item, index) => (
+      {lines.map((line) => (
         <motion.div
-          key={item.id}
-          className={`item-line-image ${index === activeIndex ? "active" : ""}`}
+          key={line.id}
+          className={`item-line-image ${line.isActive ? "active" : ""}`}
           initial={{ scale: 0.5, opacity: 0.5 }}
           animate={{
-            scale: index === activeIndex ? 0.7 : 0.3,
+            scale: line.isActive ? 0.7 : 0.3,
             opacity: 1,
           }}
           transition={{ duration: 2 }} // Adjust the duration as needed

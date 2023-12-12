@@ -1,6 +1,6 @@
 "use client";
 // SliderSwiper.tsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import BrandFilterButton from "../../Buttons/BrandFilterButtons";
@@ -9,6 +9,7 @@ import "./sliderswiper.scss";
 import MuxThumbnail from "../../MuxThumbnail/MuxThumbnail";
 import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
 import { DataProp } from "@/app/data/data";
+import ItemLines from "../../ItemLines/ItemLines";
 
 interface SliderProps {
   items: DataProp[];
@@ -19,6 +20,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
   const [selectedBrand, setSelectedBrand] = useState<string | null>("Recent");
   const [showCursor, setShowCursor] = useState(false);
   const contentControls = useAnimation(); // Use useAnimation for content animation
+  const [activeIndex, setActiveIndex] = useState(0); // Manage activeIndex state
 
   const brands = useMemo(() => {
     const uniqueBrands = Array.from(
@@ -50,6 +52,10 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
     currentIndex,
     setCurrentIndex,
   });
+
+  useEffect(() => {
+    setActiveIndex(currentIndex);
+  }, [currentIndex]);
 
   return (
     <div className="item-background-container">
@@ -159,6 +165,9 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
           </motion.button>
         </motion.div>
       </AnimatePresence>
+      <div className="item-lines-container">
+        <ItemLines items={items} activeIndex={activeIndex} />
+      </div>
     </div>
   );
 };
