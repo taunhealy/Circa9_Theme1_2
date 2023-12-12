@@ -25,7 +25,7 @@ const ItemLines: React.FC<ItemLinesProps> = ({ items, activeIndex }) => {
           key={item.id}
           className={`item-line-image ${index === activeIndex ? "active" : ""}`}
           initial={{ scale: 0.8, opacity: 0.2 }}
-          animate={{ scale: index === activeIndex ? 1.2 : 0.8, opacity: 1 }}
+          animate={{ scale: index === activeIndex ? 1.5 : 0.8, opacity: 1 }}
         >
           <Minus size={16} strokeWidth={1.5} stroke="black" />
         </motion.div>

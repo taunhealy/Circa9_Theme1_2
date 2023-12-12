@@ -10,6 +10,9 @@ import MuxThumbnail from "../../MuxThumbnail/MuxThumbnail";
 import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
 import { DataProp } from "@/app/data/data";
 import ItemLines from "../../ItemLines/ItemLines";
+import { useCarouselHandlers } from "./carouselHandlers";
+import ProductionTitle from "../ProductionTitle/ProductionTitle";
+import ItemsData from "@/app/data/data";
 
 interface SliderProps {
   items: DataProp[];
@@ -21,6 +24,9 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
   const [showCursor, setShowCursor] = useState(false);
   const contentControls = useAnimation(); // Use useAnimation for content animation
   const [activeIndex, setActiveIndex] = useState(0); // Manage activeIndex state
+  const [brandIndices, setBrandIndices] = useState<{ [brand: string]: number }>(
+    {}
+  );
 
   const brands = useMemo(() => {
     const uniqueBrands = Array.from(
@@ -103,6 +109,13 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
         </motion.section>
       </AnimatePresence>
 
+      <ProductionTitle
+        selectedBrand={selectedBrand}
+        currentIndex={currentIndex}
+        filteredItems={filteredItems}
+        itemsData={ItemsData}
+      />
+
       <AnimatePresence>
         <motion.div
           className="brand-filter-sidebar"
@@ -117,7 +130,9 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
               key={brand}
               brand={brand}
               selected={brand === selectedBrand}
-              onClick={() => setSelectedBrand(brand)}
+              onClick={() =>
+                setSelectedBrand(brand === selectedBrand ? null : brand)
+              } // Toggle null when clicking the already selected brand
             />
           ))}
         </motion.div>
