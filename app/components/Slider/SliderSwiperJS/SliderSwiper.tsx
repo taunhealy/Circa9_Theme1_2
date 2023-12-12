@@ -1,4 +1,3 @@
-"use client";
 // SliderSwiper.tsx
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
@@ -10,15 +9,15 @@ import MuxThumbnail from "../../MuxThumbnail/MuxThumbnail";
 import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
 import { DataProp } from "@/app/data/data";
 import ItemLines from "../../ItemLines/ItemLines";
-import { useCarouselHandlers } from "./carouselHandlers";
-import ProductionTitle from "../ProductionTitle/ProductionTitle";
-import ItemsData from "@/app/data/data";
 
 interface SliderProps {
-  items: DataProp[];
+  items?: DataProp[];
+  onItemClicked: (item: DataProp) => void;
 }
 
-const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
+const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
+  // Add console log to check if items is correct
+  console.log("SliderSwiper items:", items);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedBrand, setSelectedBrand] = useState<string | null>("Recent");
   const [showCursor, setShowCursor] = useState(false);
@@ -27,8 +26,14 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
   const [brandIndices, setBrandIndices] = useState<{ [brand: string]: number }>(
     {}
   );
+  const [selectedItem, setSelectedItem] = useState<DataProp | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const brands = useMemo(() => {
+    if (!items) {
+      return ["Recent"];
+    }
+
     const uniqueBrands = Array.from(
       new Set(
         items.filter((item) => item.brand !== "all").map((item) => item.brand)
@@ -38,8 +43,12 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
   }, [items]);
 
   // Filter items by date
-
   const filteredItems = useMemo(() => {
+    if (!items) {
+      console.log("No items");
+      return []; // Handle the case where items is undefined
+    }
+
     if (selectedBrand === "Recent") {
       // Use the correct logic for sorting and slicing
       return items
@@ -52,12 +61,15 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
     }
   }, [selectedBrand, items]);
 
+  console.log("Filtered Items:", filteredItems);
+
   const totalItems = useMemo(() => {
-    // Use the correct logic for getting the total number of brand items
     return selectedBrand === "Recent"
-      ? filteredItems.length
-      : items.filter((item) => item.brand === selectedBrand).length;
-  }, [selectedBrand, items, filteredItems]);
+      ? selectedItem
+        ? 1
+        : 0 // Check if selectedItem is not null or undefined
+      : items?.filter((item) => item.brand === selectedBrand).length ?? 0;
+  }, [selectedBrand, items, selectedItem]);
 
   const arrowControls = useAnimation();
 
@@ -71,6 +83,20 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
     setActiveIndex(currentIndex);
   }, [currentIndex]);
 
+  const openModal = () => {
+    const selectedItem = filteredItems[currentIndex];
+    if (selectedItem) {
+      onItemClicked(selectedItem); // Notify the parent component about the clicked item
+    }
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const currentProduction =
+    filteredItems[currentIndex]?.production || "Default Production";
+
   return (
     <div className="item-background-container">
       <AnimatePresence>
@@ -80,6 +106,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
           initial={{ opacity: 1 }}
           animate={{ opacity: 1, transition: { duration: 0.3 } }}
           exit={{ opacity: 0 }}
+          onClick={openModal}
         >
           {showCursor && <Cursor setShowCursor={setShowCursor} key="cursor" />}
           <motion.div
@@ -109,12 +136,9 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
         </motion.section>
       </AnimatePresence>
 
-      <ProductionTitle
-        selectedBrand={selectedBrand}
-        currentIndex={currentIndex}
-        filteredItems={filteredItems}
-        itemsData={ItemsData}
-      />
+      <div className="production-title-container">
+        <div className="production-title">{currentProduction}</div>
+      </div>
 
       <AnimatePresence>
         <motion.div
@@ -145,6 +169,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
           initial={{ opacity: 1 }}
           animate={contentControls}
           exit={{ opacity: 0 }}
+          onClick={openModal}
         >
           <motion.div
             className="thumbnail-container"
@@ -160,19 +185,13 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
               transition: { duration: 0.27, ease: "easeInOut" },
             }}
           >
-            {filteredItems[currentIndex] ? (
-              <MuxThumbnail
-                playbackId={filteredItems[currentIndex]?.playbackId}
-                time={5}
-              />
-            ) : filteredItems.length > 0 ? (
-              <MuxThumbnail
-                playbackId={filteredItems[0]?.playbackId}
-                time={5}
-              />
-            ) : (
-              <div>Default Thumbnail</div>
-            )}
+            <MuxThumbnail
+              itemData={
+                filteredItems[currentIndex] ||
+                (filteredItems.length > 0 && filteredItems[0])
+              }
+              time={1}
+            />
           </motion.div>
         </motion.div>
       </AnimatePresence>
@@ -207,6 +226,9 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
       </AnimatePresence>
       <div className="item-lines-container">
         <ItemLines items={filteredItems} activeIndex={activeIndex} />
+        <div className="production-title-container">
+          <div className="production-title">{currentProduction}</div>
+        </div>
       </div>
     </div>
   );

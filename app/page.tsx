@@ -1,16 +1,44 @@
-import React from "react";
+"use client";
+
+// YourMainComponent.tsx
+import React, { useState } from "react";
+import PortfolioItemModal from "./components/PortfolioItemsModal/ModalComponent";
 import SliderSwiper from "./components/Slider/SliderSwiperJS/SliderSwiper";
-import ItemsData from "@/app/data/data";
-import "@/styles/layouts.css";
-import "./data/data";
+
 import Card from "./components/Card";
-import { DataProp } from "@/app/data/data";
+import ItemsData, { DataProp } from "./data/data";
+
+interface PageProps {
+  onClick: Function;
+}
 
 function Page() {
+  const [selectedItem, setSelectedItem] = useState<DataProp | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleThumbnailClick = (item: DataProp) => {
+    setSelectedItem(item);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div>
-      <SliderSwiper items={ItemsData} />
-      <Card itemsData={ItemsData} />
+      {/* Other components */}
+      <SliderSwiper items={ItemsData} onItemClicked={handleThumbnailClick} />
+      <Card itemsData={ItemsData} onThumbnailClick={handleThumbnailClick} />
+
+      {/* Render the modal conditionally */}
+      {selectedItem && (
+        <PortfolioItemModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          selectedItem={selectedItem}
+        />
+      )}
     </div>
   );
 }

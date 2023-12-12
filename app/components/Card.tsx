@@ -1,18 +1,22 @@
-"use client";
 /* eslint-disable @next/next/no-img-element */
 // Card.tsx
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import MuxThumbnailGIF from "./MuxThumbnailGIF/MuxThumbnailGIF";
-import "./card.scss";
-import { CardProps } from "../data/data";
+import ModalComponent from "./PortfolioItemsModal/ModalComponent"; // Adjust the path
 
-interface FadeInWhenVisibleProps {
-  children: React.ReactNode;
+import "./card.scss";
+import { CardProps, DataProp } from "../data/data";
+
+export interface CardItemProps {
+  item: DataProp;
+  onThumbnailClick: (item: DataProp) => void;
 }
 
-const FadeInWhenVisible: React.FC<FadeInWhenVisibleProps> = ({ children }) => {
+const CardItem: React.FC<CardItemProps> = ({ item, onThumbnailClick }) => {
+  const [hovered, setHovered] = useState(false);
+
   const controls = useAnimation();
   const [ref, inView] = useInView();
 
@@ -22,62 +26,80 @@ const FadeInWhenVisible: React.FC<FadeInWhenVisibleProps> = ({ children }) => {
     }
   }, [controls, inView]);
 
+  const handleThumbnailClick = () => {
+    onThumbnailClick(item);
+  };
+
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0 }} // Set initial opacity to 0
+      className="card-item"
+      initial={{ opacity: 0 }}
       animate={controls}
       variants={{
         visible: { opacity: 1 },
         hidden: { opacity: 0 },
       }}
-      transition={{ duration: 1.2 }} // Adjust the duration property as needed
+      transition={{ duration: 1.2 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={handleThumbnailClick}
     >
-      {children}
+      <div className="card-image-container">
+        <motion.div
+          className="card-image"
+          initial={{ opacity: 0.2 }}
+          whileHover={{
+            opacity: 1,
+            transition: { duration: 0.5, delay: 0.1 },
+          }}
+        >
+          {hovered ? (
+            <MuxThumbnailGIF
+              className="card-gif"
+              playbackId={item.playbackId}
+            />
+          ) : (
+            <img
+              src={`https://image.mux.com/${item.playbackId}/thumbnail.png?time=0`}
+              alt="Video Thumbnail"
+              className="card-image"
+            />
+          )}
+        </motion.div>
+      </div>
     </motion.div>
   );
 };
 
-const Card: React.FC<CardProps> = ({ itemsData }) => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+const Card: React.FC<CardProps> = ({ itemsData, onThumbnailClick }) => {
+  const [selectedItem, setSelectedItem] = useState<DataProp | null>(null);
+
+  const handleThumbnailClick = (item: DataProp) => {
+    setSelectedItem(item);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedItem(null);
+  };
 
   return (
     <div className="card-container">
       <div className="card">
-        {itemsData.map((item, index) => (
-          <FadeInWhenVisible key={item.id}>
-            <div
-              className="card-item"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <div className="card-image-container">
-                <motion.div
-                  className="card-image"
-                  initial={{ opacity: 0.2 }}
-                  whileHover={{
-                    opacity: 1,
-                    transition: { duration: 0.5, delay: 0.1 },
-                  }} // Adjust the delay property as needed
-                >
-                  {hoveredIndex === index ? (
-                    <MuxThumbnailGIF
-                      className="card-gif"
-                      playbackId={item.playbackId}
-                    />
-                  ) : (
-                    <img
-                      src={`https://image.mux.com/${item.playbackId}/thumbnail.png?time=0`}
-                      alt="Video Thumbnail"
-                      className="card-image"
-                    />
-                  )}
-                </motion.div>
-              </div>
-            </div>
-          </FadeInWhenVisible>
+        {itemsData.map((item) => (
+          <CardItem
+            key={item.id}
+            item={item}
+            onThumbnailClick={handleThumbnailClick}
+          />
         ))}
       </div>
+
+      <ModalComponent
+        isOpen={!!selectedItem}
+        onClose={handleCloseModal}
+        selectedItem={selectedItem}
+      />
     </div>
   );
 };
