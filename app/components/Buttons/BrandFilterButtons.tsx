@@ -2,9 +2,10 @@ import React from "react";
 import "./brandfilterbuttons.scss";
 
 interface BrandFilterButtonProps {
-  brand: string;
+  brand: string | boolean;
   selected: boolean;
   onClick: () => void;
+  key: any;
 }
 
 const BrandFilterButton: React.FC<BrandFilterButtonProps> = ({
