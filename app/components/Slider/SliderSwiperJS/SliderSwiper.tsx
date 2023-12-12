@@ -1,17 +1,14 @@
 "use client";
-
 // SliderSwiper.tsx
-import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import BrandFilterButton from "../../Buttons/BrandFilterButtons";
 import Cursor from "../../Cursors/Cursor";
-import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
-import { useCarouselHandlers } from "./carouselHandlers";
-import { DataProp } from "@/app/data/data";
 import "./sliderswiper.scss";
 import MuxThumbnail from "../../MuxThumbnail/MuxThumbnail";
-import { useAnimation } from "framer-motion";
-import { thumbnailAnimation } from "../ThumbnailAnimation/thumbnailAnimation";
+import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
+import { DataProp } from "@/app/data/data";
 
 interface SliderProps {
   items: DataProp[];
@@ -32,6 +29,8 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
     return ["Recent", ...uniqueBrands];
   }, [items]);
 
+  // Filter items by date
+
   const filteredItems = useMemo(() => {
     if (selectedBrand === "Recent") {
       return items
@@ -46,20 +45,11 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
   const totalItems = filteredItems.length;
   const arrowControls = useAnimation();
 
-  const { handleNextItem, handlePrevItem } = useCarouselHandlers({
+  const { handleNextPrevItems } = useNextPrevHandlers({
     totalItems,
+    currentIndex,
     setCurrentIndex,
-    contentControls,
-    arrowControls,
   });
-
-  const handleItemChange = useCallback(async () => {
-    await thumbnailAnimation(contentControls);
-  }, [contentControls]);
-
-  useEffect(() => {
-    handleItemChange();
-  }, [currentIndex, contentControls, handleItemChange]);
 
   return (
     <div className="item-background-container">
@@ -67,8 +57,8 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
         <motion.section
           key={selectedBrand}
           className="item-titles"
-          initial={{ opacity: 0 }}
-          animate={contentControls}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1, transition: { duration: 0.3 } }}
           exit={{ opacity: 0 }}
         >
           {showCursor && <Cursor setShowCursor={setShowCursor} key="cursor" />}
@@ -82,7 +72,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
           </motion.div>
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.2 } }}
+            animate={{ opacity: 1, transition: { duration: 0.2, delay: 0.1 } }}
           >
             <div className="item-title">
               {filteredItems[currentIndex]?.title}
@@ -140,25 +130,18 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
           </motion.div>
         </motion.div>
       </AnimatePresence>
+
       <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.15 } }}
-          exit={{ opacity: 0 }}
-          className="nextprev-button-wrapper"
-        >
+        <motion.div className="nextprev-button-wrapper">
           {/* Previous and Next button logic... */}
           <motion.button
             title="button-prev"
             type="button"
             className="button-prev"
-            onClick={handlePrevItem}
-            whileHover={{ scale: 1.3 }}
+            onClick={() => handleNextPrevItems("prev")}
+            whileHover={{ scale: 1.7 }}
           >
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.15 } }}
-            >
+            <motion.div>
               <ChevronLeftCircle size={17} strokeWidth={2.5} stroke="black" />
             </motion.div>
           </motion.button>
@@ -167,13 +150,10 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
             title="button-next"
             type="button"
             className="button-next"
-            onClick={handleNextItem}
-            whileHover={{ scale: 1.3 }}
+            onClick={() => handleNextPrevItems("next")}
+            whileHover={{ scale: 1.7 }}
           >
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.15 } }}
-            >
+            <motion.div>
               <ChevronRightCircle size={17} strokeWidth={2.5} stroke="black" />
             </motion.div>
           </motion.button>
