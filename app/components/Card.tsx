@@ -25,12 +25,13 @@ const FadeInWhenVisible: React.FC<FadeInWhenVisibleProps> = ({ children }) => {
   return (
     <motion.div
       ref={ref}
+      initial={{ opacity: 0 }} // Set initial opacity to 0
       animate={controls}
-      initial="hidden"
       variants={{
         visible: { opacity: 1 },
         hidden: { opacity: 0 },
       }}
+      transition={{ duration: 1.2 }} // Adjust the duration property as needed
     >
       {children}
     </motion.div>
@@ -53,8 +54,11 @@ const Card: React.FC<CardProps> = ({ itemsData }) => {
               <div className="card-image-container">
                 <motion.div
                   className="card-image"
-                  initial={{ opacity: 0.45 }}
-                  whileHover={{ opacity: 1, transition: { duration: 0.05 } }}
+                  initial={{ opacity: 0.2 }}
+                  whileHover={{
+                    opacity: 1,
+                    transition: { duration: 0.5, delay: 0.1 },
+                  }} // Adjust the delay property as needed
                 >
                   {hoveredIndex === index ? (
                     <MuxThumbnailGIF
@@ -63,7 +67,7 @@ const Card: React.FC<CardProps> = ({ itemsData }) => {
                     />
                   ) : (
                     <img
-                      src={`https://image.mux.com/${item.playbackId}/thumbnail.png?time=7`}
+                      src={`https://image.mux.com/${item.playbackId}/thumbnail.png?time=0`}
                       alt="Video Thumbnail"
                       className="card-image"
                     />
