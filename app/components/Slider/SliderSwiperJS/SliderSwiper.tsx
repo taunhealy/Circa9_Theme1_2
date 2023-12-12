@@ -81,7 +81,11 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
             animate={{ opacity: 1, transition: { duration: 0.3 } }}
           >
             <div className="brand-title">
-              {filteredItems[currentIndex]?.brand}
+              {filteredItems[currentIndex]
+                ? filteredItems[currentIndex]?.brand
+                : filteredItems.length > 0
+                ? filteredItems[0]?.brand // Render the first item of the selected brand
+                : "Default Brand"}
             </div>
           </motion.div>
           <motion.div
@@ -89,7 +93,11 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
             animate={{ opacity: 1, transition: { duration: 0.2, delay: 0.1 } }}
           >
             <div className="item-title">
-              {filteredItems[currentIndex]?.title}
+              {filteredItems[currentIndex]
+                ? filteredItems[currentIndex]?.title
+                : filteredItems.length > 0
+                ? filteredItems[0]?.title // Render the title of the first item of the selected brand
+                : "Default Title"}
             </div>
           </motion.div>
         </motion.section>
@@ -137,10 +145,19 @@ const SliderSwiper: React.FC<SliderProps> = ({ items }) => {
               transition: { duration: 0.27, ease: "easeInOut" },
             }}
           >
-            <MuxThumbnail
-              playbackId={filteredItems[currentIndex]?.playbackId}
-              time={5}
-            />
+            {filteredItems[currentIndex] ? (
+              <MuxThumbnail
+                playbackId={filteredItems[currentIndex]?.playbackId}
+                time={5}
+              />
+            ) : filteredItems.length > 0 ? (
+              <MuxThumbnail
+                playbackId={filteredItems[0]?.playbackId}
+                time={5}
+              />
+            ) : (
+              <div>Default Thumbnail</div>
+            )}
           </motion.div>
         </motion.div>
       </AnimatePresence>
