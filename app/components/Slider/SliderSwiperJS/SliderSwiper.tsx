@@ -39,29 +39,32 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
   // Item filtering logic
   const filteredItems = useMemo(() => {
     if (!items) return [];
-    return selectedBrand === "Recent"
-      ? items
-          .filter((item) => item.date)
-          .sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-          )
-          .slice(0, 9)
-      : items.filter((item) => item.brand === selectedBrand);
-  }, [selectedBrand, items]);
 
+    if (selectedBrand === "Recent") {
+      return items
+        .filter((item) => item.date)
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 9);
+    }
+
+    return items.filter((item) => item.brand === selectedBrand);
+  }, [selectedBrand, items]);
   // Total items logic
   const totalItems = useMemo(() => {
     return selectedBrand === "Recent"
-      ? selectedItem
-        ? 1
-        : 0
+      ? items?.filter((item) => item.date).length ?? 0
       : items?.filter((item) => item.brand === selectedBrand).length ?? 0;
-  }, [selectedBrand, items, selectedItem]);
+  }, [selectedBrand, items]);
 
   // Use effect for updating active index
   useEffect(() => {
     setActiveIndex(currentIndex);
   }, [currentIndex]);
+
+  // Reset currentIndex when selectedBrand changes
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [selectedBrand]);
 
   // Modal handling
   const handleModal = () => {
@@ -74,6 +77,46 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
   // Current production title
   const currentProduction =
     filteredItems[currentIndex]?.production || "Default Production";
+
+  const brandFilterAnimation = {
+    initial: { opacity: 0, y: -10 },
+    hidden: { opacity: 0, y: 0 },
+    show: {
+      transition: {
+        staggerChildren: 0.34,
+        duration: 1.7,
+      },
+      opacity: 1,
+      y: 0,
+    },
+    exit: {
+      opacity: 0,
+      y: 0,
+      transition: {
+        ease: "easeInOut",
+        duration: 1,
+      },
+    },
+  };
+
+  const { handleNextPrevItems } = useNextPrevHandlers({
+    totalItems,
+    currentIndex,
+    setCurrentIndex,
+  });
+
+  // Function to handle item click and navigate to the item
+
+  const handleItemClick = (
+    index: number,
+    onSelectItem: (item: DataProp) => void
+  ) => {
+    const clickedItem = filteredItems[index];
+
+    if (clickedItem) {
+      onSelectItem(clickedItem);
+    }
+  };
 
   return (
     <div className="item-background-container">
@@ -181,10 +224,38 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
       <AnimatePresence>
         <motion.div className="nextprev-button-wrapper">
           {/* Previous and Next button logic... */}
+          <motion.button
+            title="button-prev"
+            type="button"
+            className="button-prev"
+            onClick={() => handleNextPrevItems("prev")}
+            whileHover={{ scale: 1.7 }}
+          >
+            <motion.div>
+              <ChevronLeftCircle size={17} strokeWidth={2.5} stroke="black" />
+            </motion.div>
+          </motion.button>
+
+          <motion.button
+            title="button-next"
+            type="button"
+            className="button-next"
+            onClick={() => handleNextPrevItems("next")}
+            whileHover={{ scale: 1.7 }}
+          >
+            <motion.div>
+              <ChevronRightCircle size={17} strokeWidth={2.5} stroke="black" />
+            </motion.div>
+          </motion.button>
         </motion.div>
       </AnimatePresence>
+
       <div className="item-lines-container">
-        <ItemLines items={filteredItems} activeIndex={activeIndex} />
+        <ItemLines
+          items={filteredItems}
+          activeIndex={activeIndex}
+          onItemClick={handleItemClick}
+        />
         <div className="production-title-container">
           <div className="production-title">{currentProduction}</div>
         </div>

@@ -1,20 +1,19 @@
-// ItemLines.jsx
-
+// ItemLines.tsx
 import React from "react";
 import { motion } from "framer-motion";
 import { Minus } from "lucide-react";
 import "./ItemLines.scss";
-
-interface ItemLinesProps {
-  items: Item[];
-  activeIndex: number;
-}
 
 interface Item {
   id: number;
   title: string;
   img: string;
   // ... other properties
+}
+
+interface ItemLinesProps {
+  items: Item[];
+  activeIndex: number;
 }
 
 const ItemLines: React.FC<ItemLinesProps> = ({ items, activeIndex }) => {
