@@ -2,7 +2,6 @@
 // ModalComponent.tsx
 import React from "react";
 import Modal from "react-modal";
-import ProductionTitle from "../Slider/ProductionTitle/ProductionTitle";
 import { DataProp } from "@/app/data/data";
 
 interface ModalComponentProps {
@@ -30,12 +29,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
     >
       {/* Render your item details inside the modal */}
       <div className="portfolio-item-details">
-        <ProductionTitle
-          selectedBrand={selectedItem.brand}
-          currentIndex={0} // You may adjust this based on your modal design
-          filteredItems={[selectedItem]} // Pass only the selected item
-          itemsData={[selectedItem]} // Pass only the selected item
-        />
+  
 
         <div className="credits-sidebar">
           {/* Render your credits titles and values here */}
