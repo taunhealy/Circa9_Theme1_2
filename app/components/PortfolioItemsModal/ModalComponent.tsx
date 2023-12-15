@@ -29,8 +29,6 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
     >
       {/* Render your item details inside the modal */}
       <div className="portfolio-item-details">
-  
-
         <div className="credits-sidebar">
           {/* Render your credits titles and values here */}
           <div className="credit-item">

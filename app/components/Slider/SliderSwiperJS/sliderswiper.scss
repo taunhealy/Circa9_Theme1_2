@@ -18,11 +18,8 @@
   grid-area: titles;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   text-align: left;
-  transform: translateX(0%);
-  width: 100%;
-  justify-content: flex-end;
+  justify-content: flex-endfa;
 }
 
 .brand-filter-sidebar {
@@ -112,9 +109,9 @@
   font-style: bold;
   font-weight: 500;
   font-size: clamp(12px, 50%, 70%);
-  place-content: flex-start;
-  align-items: left;
-  text-align: left;
+  position: relative;
+  left: 10%;
+  width: 100%;
 }
 
 .item-title {
@@ -125,6 +122,9 @@
   font-style: bold;
   font-weight: 600;
   font-size: clamp(25px, 100%, 100%);
+  position: relative;
+  left: 10%;
+  width: 100%;
 }
 
 .button-prev,

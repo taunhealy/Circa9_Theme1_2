@@ -9,6 +9,7 @@ import MuxThumbnail from "../../MuxThumbnail/MuxThumbnail";
 import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
 import { DataProp } from "@/app/data/data";
 import ItemLines from "../../ItemLines/ItemLines";
+import ArrowButton from "../../ArrowButton/ArrowButton";
 
 interface SliderProps {
   items?: DataProp[];
