@@ -5,10 +5,10 @@ import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import BrandFilterButton from "../../Buttons/BrandFilterButtons";
 import Cursor from "../../Cursors/Cursor";
 import "./sliderswiper.scss";
-import MuxThumbnail from "../../MuxThumbnail/MuxThumbnail";
 import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
 import { DataProp } from "@/app/data/data";
 import ItemLines from "../../ItemLines/ItemLines";
+import Image from "next/image";
 
 interface SliderProps {
   items?: DataProp[];
@@ -209,13 +209,12 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
               transition: { duration: 0.27, ease: "easeInOut" },
             }}
           >
-            <MuxThumbnail
-              playbackId={filteredItems[currentIndex]?.playbackId}
-              time={1}
-              itemData={
-                filteredItems[currentIndex] ||
-                (filteredItems.length > 0 && filteredItems[0])
-              }
+            <Image
+              className="thumbnail-image"
+              src={`https://image.mux.com/${filteredItems[currentIndex]?.playbackId}/thumbnail.png?time=1`}
+              alt="Video Thumbnail"
+              width={800}
+              height={800}
             />
           </motion.div>
         </motion.div>
