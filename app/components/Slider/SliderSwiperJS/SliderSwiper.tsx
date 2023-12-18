@@ -1,14 +1,13 @@
 // SliderSwiper.tsx
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import BrandFilterButton from "../../Buttons/BrandFilterButtons";
 import Cursor from "../../Cursors/Cursor";
-import "./sliderswiper.scss";
 import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
 import { DataProp } from "@/app/data/data";
 import ItemLines from "../../ItemLines/ItemLines";
-import Image from "next/image";
+import "./sliderswiper.css";
 
 interface SliderProps {
   items?: DataProp[];
@@ -84,7 +83,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
     show: {
       transition: {
         staggerChildren: 0.34,
-        duration: 1.7,
+        duration: 0.5,
       },
       opacity: 1,
       y: 0,
@@ -94,7 +93,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
       y: 0,
       transition: {
         ease: "easeInOut",
-        duration: 1,
+        duration: 0.4,
       },
     },
   };
@@ -163,12 +162,13 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
 
       <AnimatePresence>
         <motion.div
+          key="brandfilter"
           className="brand-filter-sidebar"
           onMouseOver={() => setShowCursor(true)}
           onMouseLeave={() => setShowCursor(false)}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.6 } }}
-          exit={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { duration: 2.5 } }}
+          exit={{ opacity: 0, transition: { duration: 0.5, delay: 1.2 } }}
         >
           {brands.map((brand) => (
             <BrandFilterButton
@@ -206,15 +206,13 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
             exit={{
               opacity: 0,
               scale: 0.99,
-              transition: { duration: 0.27, ease: "easeInOut" },
+              transition: { duration: 1.57, ease: "easeInOut" },
             }}
           >
-            <Image
+            <motion.img
               className="thumbnail-image"
               src={`https://image.mux.com/${filteredItems[currentIndex]?.playbackId}/thumbnail.png?time=1`}
               alt="Video Thumbnail"
-              width={800}
-              height={800}
             />
           </motion.div>
         </motion.div>
@@ -231,7 +229,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
             whileHover={{ scale: 1.7 }}
           >
             <motion.div>
-              <ChevronLeftCircle size={17} strokeWidth={2.5} stroke="black" />
+              <ChevronRight size={27} strokeWidth={2.5} stroke="black" />
             </motion.div>
           </motion.button>
 
@@ -243,7 +241,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
             whileHover={{ scale: 1.7 }}
           >
             <motion.div>
-              <ChevronRightCircle size={17} strokeWidth={2.5} stroke="black" />
+              <ChevronRight />
             </motion.div>
           </motion.button>
         </motion.div>

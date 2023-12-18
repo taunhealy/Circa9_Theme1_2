@@ -4,17 +4,12 @@
 }
 
 .card {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2rem; /* Adjust the gap based on your design preference */
-  position: relative;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  background-color: white;
-  padding: 2rem;
-  margin-top: 0;
-  transform: translateY(-1);
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(auto-fill, 320px);
+  grid-row-gap: 1.2em;
+  grid-column-gap: 1em;
 }
 
 .card-item {
