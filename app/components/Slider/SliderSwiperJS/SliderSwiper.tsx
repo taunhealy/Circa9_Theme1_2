@@ -8,6 +8,7 @@ import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
 import { DataProp } from "@/app/data/data";
 import ItemLines from "../../ItemLines/ItemLines";
 import "./sliderswiper.css";
+import debounce from "lodash/debounce";
 
 interface SliderProps {
   items?: DataProp[];
@@ -55,6 +56,25 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
       : items?.filter((item) => item.brand === selectedBrand).length ?? 0;
   }, [selectedBrand, items]);
 
+  const { handleNextPrevItems } = useNextPrevHandlers({
+    totalItems,
+    currentIndex,
+    setCurrentIndex,
+  });
+
+  // Function to handle item click and navigate to the item
+
+  const handleItemClick = (
+    index: number,
+    onSelectItem: (item: DataProp) => void
+  ) => {
+    const clickedItem = filteredItems[index];
+
+    if (clickedItem) {
+      onSelectItem(clickedItem);
+    }
+  };
+
   // Use effect for updating active index
   useEffect(() => {
     setActiveIndex(currentIndex);
@@ -71,6 +91,16 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
     if (selectedItem) {
       onItemClicked(selectedItem);
     }
+  };
+
+  const debouncedHandleNextPrevItems = debounce(handleNextPrevItems, 85);
+
+  const handleMouseWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    // Use the deltaY property to determine the direction of the wheel scroll
+    const direction = event.deltaY > 0 ? "next" : "prev";
+
+    // Call the existing function to handle next/prev items
+    debouncedHandleNextPrevItems(direction);
   };
 
   // Current production title
@@ -98,27 +128,8 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
     },
   };
 
-  const { handleNextPrevItems } = useNextPrevHandlers({
-    totalItems,
-    currentIndex,
-    setCurrentIndex,
-  });
-
-  // Function to handle item click and navigate to the item
-
-  const handleItemClick = (
-    index: number,
-    onSelectItem: (item: DataProp) => void
-  ) => {
-    const clickedItem = filteredItems[index];
-
-    if (clickedItem) {
-      onSelectItem(clickedItem);
-    }
-  };
-
   return (
-    <div className="item-background-container">
+    <div className="item-background-container" onWheel={handleMouseWheel}>
       <AnimatePresence>
         <motion.section
           key={selectedBrand}

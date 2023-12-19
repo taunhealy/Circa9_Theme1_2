@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import PortfolioItemModal from "./components/PortfolioItemsModal/ModalComponent";
 import SliderSwiper from "./components/Slider/SliderSwiperJS/SliderSwiper";
 
-import Card from "./components/Card";
 import ItemsData, { DataProp } from "./data/data";
 
 interface PageProps {
@@ -29,7 +28,6 @@ function Page() {
     <div>
       {/* Other components */}
       <SliderSwiper items={ItemsData} onItemClicked={handleThumbnailClick} />
-      <Card itemsData={ItemsData} onThumbnailClick={handleThumbnailClick} />
 
       {/* Render the modal conditionally */}
       {selectedItem && (
