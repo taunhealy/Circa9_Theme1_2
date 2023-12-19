@@ -103,6 +103,18 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
     debouncedHandleNextPrevItems(direction);
   };
 
+  // Function to handle touchpad scrolling events with debounce
+  const handleTouchpadScroll = (event: React.TouchEvent<HTMLDivElement>) => {
+    // Determine the touch direction based on the change in Y coordinate
+    const direction =
+      event.changedTouches[0].clientY > event.touches[0].clientY
+        ? "next"
+        : "prev";
+
+    // Call the debounced function to handle next/prev items
+    debouncedHandleNextPrevItems(direction);
+  };
+
   // Current production title
   const currentProduction =
     filteredItems[currentIndex]?.production || "Default Production";
@@ -129,7 +141,11 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
   };
 
   return (
-    <div className="item-background-container" onWheel={handleMouseWheel}>
+    <div
+      className="item-background-container"
+      onWheel={handleMouseWheel}
+      onTouchMove={handleTouchpadScroll}
+    >
       <AnimatePresence>
         <motion.section
           key={selectedBrand}
