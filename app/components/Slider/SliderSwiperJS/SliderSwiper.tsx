@@ -93,7 +93,7 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
     }
   };
 
-  const debouncedHandleNextPrevItems = debounce(handleNextPrevItems, 85);
+  const debouncedHandleNextPrevItems = debounce(handleNextPrevItems, 125);
 
   const handleMouseWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     // Use the deltaY property to determine the direction of the wheel scroll
@@ -114,7 +114,6 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
     // Call the debounced function to handle next/prev items
     debouncedHandleNextPrevItems(direction);
   };
-
   // Current production title
   const currentProduction =
     filteredItems[currentIndex]?.production || "Default Production";
