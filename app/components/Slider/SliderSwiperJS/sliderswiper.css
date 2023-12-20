@@ -231,3 +231,21 @@
   transform: translate(-50%, -50%);
   border-radius: 2rem;
 }
+
+/* Add this to your existing CSS */
+.brand-filter-sidebar {
+  position: relative;
+}
+
+.arrow-button {
+  position: relative;
+  cursor: pointer;
+}
+
+.arrow-button:first-child {
+  left: 90%;
+}
+
+.arrow-button:last-child {
+  left: 90%;
+}

@@ -9,6 +9,7 @@ import { DataProp } from "@/app/data/data";
 import ItemLines from "../../ItemLines/ItemLines";
 import "./sliderswiper.css";
 import debounce from "lodash/debounce";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface SliderProps {
   items?: DataProp[];
@@ -139,6 +140,18 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
     },
   };
 
+  const handleArrowClick = (direction: "up" | "down") => {
+    // Implement logic to handle arrow button clicks (e.g., scroll the brand-titles)
+    // You may need to adjust the logic based on your specific requirements
+    const step = direction === "up" ? -1 : 1;
+    const newIndex = currentIndex + step;
+
+    // Ensure the newIndex is within bounds
+    if (newIndex >= 0 && newIndex < brands.length) {
+      setCurrentIndex(newIndex);
+    }
+  };
+
   return (
     <div
       className="item-background-container"
@@ -196,10 +209,14 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
           animate={{ opacity: 1, transition: { duration: 2.5 } }}
           exit={{ opacity: 0, transition: { duration: 0.5, delay: 1.2 } }}
         >
+          <div className="arrow-button" onClick={() => handleArrowClick("up")}>
+            <ChevronUp size={20} strokeWidth={2.5} stroke="black" />
+          </div>
+
           {brands.map((brand) => (
             <BrandFilterButton
-              key={String(brand)} // Ensure 'key' is always a string
-              brand={String(brand)} // Ensure 'brand' is always a string
+              key={String(brand)}
+              brand={String(brand)}
               selected={brand === selectedBrand}
               onClick={() => {
                 setSelectedBrand(
@@ -209,6 +226,13 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
               }}
             />
           ))}
+
+          <motion.div
+            className="arrow-button"
+            onClick={() => handleArrowClick("down")}
+          >
+            <ChevronDown size={20} strokeWidth={2.5} stroke="black" />
+          </motion.div>
         </motion.div>
       </AnimatePresence>
 
