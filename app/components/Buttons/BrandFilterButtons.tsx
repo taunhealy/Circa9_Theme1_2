@@ -9,7 +9,7 @@ interface BrandFilterButtonProps {
   key: any;
 }
 
-const BrandFilterButton: React.FC<BrandFilterButtonProps> = ({
+const BrandFilterButtons: React.FC<BrandFilterButtonProps> = ({
   brand,
   selected,
   onClick,
@@ -31,4 +31,4 @@ const BrandFilterButton: React.FC<BrandFilterButtonProps> = ({
   );
 };
 
-export default BrandFilterButton;
+export default BrandFilterButtons;

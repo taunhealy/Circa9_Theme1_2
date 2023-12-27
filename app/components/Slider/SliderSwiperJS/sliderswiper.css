@@ -34,16 +34,6 @@
   justify-content: flex-end;
 }
 
-.brand-filter-sidebar {
-  grid-area: brands;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px; /* Adjust as needed */
-  z-index: 100;
-}
-
 .production-title-container {
   position: relative;
   width: 100%;
@@ -230,22 +220,4 @@
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 2rem;
-}
-
-/* Add this to your existing CSS */
-.brand-filter-sidebar {
-  position: relative;
-}
-
-.arrow-button {
-  position: relative;
-  cursor: pointer;
-}
-
-.arrow-button:first-child {
-  left: 90%;
-}
-
-.arrow-button:last-child {
-  left: 90%;
 }

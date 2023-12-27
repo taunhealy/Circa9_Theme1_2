@@ -2,7 +2,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import BrandFilterButton from "../../Buttons/BrandFilterButtons";
 import Cursor from "../../Cursors/Cursor";
 import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
 import { DataProp } from "@/app/data/data";
@@ -10,6 +9,7 @@ import ItemLines from "../../ItemLines/ItemLines";
 import "./sliderswiper.css";
 import debounce from "lodash/debounce";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import BrandSidebar from "../../BrandSidebar/BrandSidebar";
 
 interface SliderProps {
   items?: DataProp[];
@@ -32,11 +32,10 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
   const brands = useMemo(() => {
     if (!items) return ["Recent"];
     const brandsSet = new Set(
-      items.map((item) => item.brand !== "all" && item.brand)
+      items.filter((item) => item.brand !== "all").map((item) => item.brand)
     );
     return ["Recent", ...Array.from(brandsSet)];
   }, [items]);
-
   // Item filtering logic
   const filteredItems = useMemo(() => {
     if (!items) return [];
@@ -140,15 +139,20 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
     },
   };
 
-  const handleArrowClick = (direction: "up" | "down") => {
-    // Implement logic to handle arrow button clicks (e.g., scroll the brand-titles)
-    // You may need to adjust the logic based on your specific requirements
-    const step = direction === "up" ? -1 : 1;
-    const newIndex = currentIndex + step;
+  const handleBrandClick = (brand: string) => {
+    setSelectedBrand((prevBrand) =>
+      prevBrand === brand ? null : (brand as string)
+    );
+    setCurrentIndex(0);
+  };
 
-    // Ensure the newIndex is within bounds
+  const handleBrandNavigate = (direction: "up" | "down") => {
+    const step = direction === "up" ? -1 : 1;
+    const newIndex = brands.indexOf(selectedBrand!) + step;
+
     if (newIndex >= 0 && newIndex < brands.length) {
-      setCurrentIndex(newIndex);
+      setSelectedBrand(brands[newIndex] as string);
+      setCurrentIndex(0);
     }
   };
 
@@ -159,6 +163,13 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
       onTouchMove={handleTouchpadScroll}
     >
       <AnimatePresence>
+        <BrandSidebar
+          brands={brands}
+          selectedBrand={selectedBrand}
+          onBrandClick={handleBrandClick}
+          onBrandNavigate={handleBrandNavigate}
+        />
+
         <motion.section
           key={selectedBrand}
           className="item-titles"
@@ -198,43 +209,6 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
       <div className="production-title-container">
         <div className="production-title">{currentProduction}</div>
       </div>
-
-      <AnimatePresence>
-        <motion.div
-          key="brandfilter"
-          className="brand-filter-sidebar"
-          onMouseOver={() => setShowCursor(true)}
-          onMouseLeave={() => setShowCursor(false)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 2.5 } }}
-          exit={{ opacity: 0, transition: { duration: 0.5, delay: 1.2 } }}
-        >
-          <div className="arrow-button" onClick={() => handleArrowClick("up")}>
-            <ChevronUp size={20} strokeWidth={2.5} stroke="black" />
-          </div>
-
-          {brands.map((brand) => (
-            <BrandFilterButton
-              key={String(brand)}
-              brand={String(brand)}
-              selected={brand === selectedBrand}
-              onClick={() => {
-                setSelectedBrand(
-                  brand === selectedBrand ? null : String(brand)
-                );
-                return void 0;
-              }}
-            />
-          ))}
-
-          <motion.div
-            className="arrow-button"
-            onClick={() => handleArrowClick("down")}
-          >
-            <ChevronDown size={20} strokeWidth={2.5} stroke="black" />
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
 
       <AnimatePresence>
         <motion.div
