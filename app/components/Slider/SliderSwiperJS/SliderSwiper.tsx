@@ -168,7 +168,6 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
           brands={brands}
           selectedBrand={selectedBrand}
           onBrandClick={handleBrandClick}
-          onBrandNavigate={handleBrandNavigate}
         />
 
         <motion.section

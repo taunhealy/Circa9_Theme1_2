@@ -1,19 +1,32 @@
 .brand-sidebar-container {
   display: flex;
-
-  align-items: flex-end;
+  justify-content: center;
+  align-items: flex-end; /* Adjusted from flex-end to flex-start */
   flex-direction: column;
   gap: 12px;
   z-index: 100;
-  top: 25%;
   left: 0%;
   position: relative;
   grid-area: brands;
+  cursor: pointer;
+  overflow-y: auto;
 }
 
 .brand-filter-button {
   color: grey;
   font-family: Inter;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 400;
+  font-size: 12px;
+  text-align: right;
+}
+
+body,
+html {
+  overflow: auto;
+}
+
+.brands-list {
+  height: auto; /* or a value that allows for content overflow */
+  overflow: auto;
 }
