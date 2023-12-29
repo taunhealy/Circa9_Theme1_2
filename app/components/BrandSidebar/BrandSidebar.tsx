@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ChevronUp, ChevronDown } from "lucide-react";
+import "./brandsidebar.css";
 
 interface BrandSidebarProps {
   brands: (string | null)[]; // Adjust the type to allow null if needed

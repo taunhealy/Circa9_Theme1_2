@@ -7,7 +7,7 @@
     "... titles ..."
     "brands content lines"
     "... credits arrows";
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1.5fr 1fr 1.5fr;
   grid-template-rows: 1fr 2.6fr 1fr;
   overflow: hidden;
 }
@@ -87,6 +87,27 @@
   position: relative;
 }
 
+.thumbnail-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  grid-area: content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: auto;
+  border-radius: 2rem;
+}
+
+.thumbnail-image {
+  object-fit: cover;
+  border-radius: 2rem;
+  width: 65%;
+  height: 90%;
+  position: absolute;
+}
+
 .item-media-container {
   position: relative;
   width: 100%;
@@ -125,7 +146,7 @@
 .brand-title {
   color: grey;
   font-family: Inter;
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
@@ -141,7 +162,7 @@
 .item-title {
   color: #000;
   font-family: Inter;
-  font-size: 27px;
+  font-size: 18px;
   font-weight: bold;
   line-height: normal;
   text-transform: uppercase;
@@ -156,9 +177,9 @@
   .item-title {
     color: #000;
     font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 550;
+    font-size: 14px;
+    font-style: bold;
+    font-weight: 650;
     line-height: normal;
     text-transform: uppercase;
     display: flex;
@@ -166,6 +187,13 @@
     justify-content: center;
     flex-shrink: 0;
     margin-left: 25%; /* Adjust the margin as needed */
+  }
+  .brand-title {
+    color: grey;
+    font-family: Inter;
+    font-size: 10px;
+    font-style: bold;
+    font-weight: 550;
   }
 }
 
@@ -203,21 +231,4 @@
 .item-image-container {
   height: 100%;
   width: 100%;
-}
-
-.thumbnail-container {
-  width: 500px;
-  height: 800px;
-  overflow: hidden;
-}
-
-.thumbnail-image {
-  width: 300px;
-  height: 400px;
-  object-fit: cover;
-  position: absolute; /* Use absolute positioning for precise placement */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 2rem;
 }
