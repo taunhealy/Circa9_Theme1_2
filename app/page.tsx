@@ -2,8 +2,9 @@
 
 // YourMainComponent.tsx
 import React, { useState } from "react";
-import PortfolioItemModal from "./components/PortfolioItemsModal/ModalComponent";
 import SliderSwiper from "./components/Slider/SliderSwiperJS/SliderSwiper";
+import StretchSlider from "./components/Slider/StretchSlider/StretchSlider";
+import "./page.css";
 
 import ItemsData, { DataProp } from "./data/data";
 
@@ -11,32 +12,46 @@ interface PageProps {
   onClick: Function;
 }
 
+enum ActiveSlider {
+  Swiper,
+  Stretch,
+}
+
 function Page() {
   const [selectedItem, setSelectedItem] = useState<DataProp | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [activeSlider, setActiveSlider] = useState<ActiveSlider>(
+    ActiveSlider.Stretch
+  );
 
   const handleThumbnailClick = (item: DataProp) => {
     setSelectedItem(item);
-    setModalOpen(true);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
+  const closeModal = () => {};
+
+  const handleSliderChange = (slider: ActiveSlider) => {
+    setActiveSlider(slider);
   };
 
   return (
     <div>
       {/* Other components */}
-      <SliderSwiper items={ItemsData} onItemClicked={handleThumbnailClick} />
-
-      {/* Render the modal conditionally */}
-      {selectedItem && (
-        <PortfolioItemModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          selectedItem={selectedItem}
-        />
+      {activeSlider === ActiveSlider.Swiper && (
+        <SliderSwiper items={ItemsData} onItemClicked={handleThumbnailClick} />
       )}
+      {activeSlider === ActiveSlider.Stretch && (
+        <StretchSlider items={ItemsData} onItemClicked={handleThumbnailClick} />
+      )}
+
+      {/* Buttons to toggle between sliders */}
+      <div className="button-toggle">
+        <button onClick={() => handleSliderChange(ActiveSlider.Swiper)}>
+          Swiper
+        </button>
+        <button onClick={() => handleSliderChange(ActiveSlider.Stretch)}>
+          Horizontal
+        </button>
+      </div>
     </div>
   );
 }

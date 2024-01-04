@@ -4,24 +4,19 @@
 }
 
 .card {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0rem; /* Adjust the gap based on your design preference */
-  position: relative;
-  border-radius: 1.4rem;
-  overflow: hidden;
-  background-color: white;
-  padding: 3rem;
-  margin-top: 0;
-  transform: translateY(-1);
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(auto-fill, 320px);
+  grid-row-gap: 1.2em;
+  grid-column-gap: 1em;
 }
 
 .card-item {
   position: relative;
   overflow: hidden;
   background-color: white;
-  transform: scale(0.7);
+  transform: scale(1);
   border-radius: 1.6rem;
 }
 
@@ -38,6 +33,8 @@
   overflow: hidden;
   width: 100%;
   height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 /* Text content styles */

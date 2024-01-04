@@ -1,0 +1,8 @@
+.button-toggle {
+  position: absolute; /* Use 'absolute' for positioning */
+  bottom: 30px; /* Use a number without quotes for positioning */
+  right: 10px; /* Use a number without quotes for positioning */
+  display: flex;
+  gap: 10px;
+  z-index: 9;
+}

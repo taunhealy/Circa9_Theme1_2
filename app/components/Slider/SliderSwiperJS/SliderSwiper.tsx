@@ -11,6 +11,7 @@ import debounce from "lodash/debounce";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import BrandSidebar from "../../BrandSidebar/BrandSidebar";
 import Image from "next/image";
+import ItemModal from "../../ItemModal/ItemModal";
 
 interface SliderProps {
   items?: DataProp[];
@@ -27,7 +28,6 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
     {}
   );
   const [selectedItem, setSelectedItem] = useState<DataProp | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false);
 
   // Brand filtering logic
   const brands = useMemo(() => {
@@ -85,14 +85,6 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
   useEffect(() => {
     setCurrentIndex(0);
   }, [selectedBrand]);
-
-  // Modal handling
-  const handleModal = () => {
-    const selectedItem = filteredItems[currentIndex];
-    if (selectedItem) {
-      onItemClicked(selectedItem);
-    }
-  };
 
   const debouncedHandleNextPrevItems = debounce(handleNextPrevItems, 125);
 
@@ -155,6 +147,16 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
       setSelectedBrand(brands[newIndex] as string);
       setCurrentIndex(0);
     }
+  };
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -239,11 +241,12 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
               alt="Thumbnail Image"
               width="500"
               height="500"
-              objectFit="cover"
             />
           </motion.div>
         </motion.div>
       </AnimatePresence>
+
+      {/* Next Prev buttons */}
 
       <AnimatePresence>
         <motion.div className="nextprev-button-wrapper">
@@ -253,7 +256,6 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
             type="button"
             className="button-prev"
             onClick={() => handleNextPrevItems("prev")}
-            whileHover={{ scale: 1.7 }}
           >
             <motion.div>
               <ChevronRight size={27} strokeWidth={2.5} stroke="black" />
@@ -272,6 +274,16 @@ const SliderSwiper: React.FC<SliderProps> = ({ items, onItemClicked }) => {
             </motion.div>
           </motion.button>
         </motion.div>
+      </AnimatePresence>
+
+      {/* Modal */}
+
+      <AnimatePresence>
+        <ItemModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          selectedItem={filteredItems[currentIndex]}
+        />
       </AnimatePresence>
 
       <div className="item-lines-container">
