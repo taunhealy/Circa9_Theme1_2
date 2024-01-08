@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "./stretchslider.css";
 import { DataProp } from "@/app/data/data";
+import Image from "next/image";
 
 type Slide = DataProp;
 interface StretchSliderProps {
@@ -59,10 +60,12 @@ const StretchSlider: React.FC<StretchSliderProps> = ({
       >
         {slides.map((slide, index) => (
           <div key={index} className={`stretch-slider-item`}>
-            <img
-              src={`/images/${slide.img}`} // Assuming images are stored in a folder named 'images'
-              alt={`Slide ${index + 1} Image`}
-              className="slide-image"
+            <Image
+              className="thumbnail-image"
+              src="/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp" // Hardcoded path for testing
+              alt="Thumbnail Image"
+              width="500"
+              height="500"
             />
           </div>
         ))}

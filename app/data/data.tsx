@@ -67,7 +67,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 4,

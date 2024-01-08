@@ -8,15 +8,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import "./sliderscrollvertical.css";
 import ItemsData from "@/app/data/data";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const SliderScrollVertical = () => {
-  const panelsRef = useRef([]); // Use a ref to store panel references
-  const panels = panelsRef.current;
-
   useEffect(() => {
-    panelsRef.current = gsap.utils.toArray(".panel");
     const observer = ScrollTrigger.normalizeScroll(true);
     let scrollTween;
 
@@ -31,7 +28,7 @@ const SliderScrollVertical = () => {
       { capture: true, passive: false }
     );
 
-    const goToSection = (i) => {
+    const goToSection = (i, panels) => {
       scrollTween = gsap.to(window, {
         scrollTo: { y: panels[i].offsetTop, autoKill: false },
         onStart: () => {
@@ -44,6 +41,8 @@ const SliderScrollVertical = () => {
       });
     };
 
+    const panels = gsap.utils.toArray(".panel");
+
     panels.forEach((panel, i) => {
       ScrollTrigger.create({
         trigger: panel,
@@ -52,7 +51,7 @@ const SliderScrollVertical = () => {
         onToggle: (self) => {
           console.log(`Panel ${i} toggled: ${self.isActive}`);
           if (self.isActive && !scrollTween) {
-            goToSection(i);
+            goToSection(i, panels);
           }
         },
       });
@@ -77,23 +76,33 @@ const SliderScrollVertical = () => {
         { capture: true, passive: false }
       );
     };
-  }, [panels]);
+  }, []);
 
   console.log("ItemsData:", ItemsData);
 
   return (
     <div className="slider-scroll-vertical">
-      {panels.map((panel, index) => (
-        <section key={index} className="panel">
-          <div className="image-container">
-            <img src={ItemsData[index].img} alt={`Image ${index}`} />
-          </div>
-          <div className="panel-content">
-            <h2>{ItemsData[index].title}</h2>
-            <p>{ItemsData[index].brand}</p>
-          </div>
-        </section>
-      ))}
+      {ItemsData.map((item, index) => {
+        console.log(`Rendering item ${index}:`, item);
+
+        return (
+          <section key={index} className="panel">
+            <div className="image-container">
+              <Image
+                className="thumbnail-image"
+                src="/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp" // Hardcoded path for testing
+                alt="Thumbnail Image"
+                width="500"
+                height="500"
+              />
+            </div>
+            <div className="panel-content">
+              <h2>{item.title}</h2>
+              <p>{item.brand}</p>
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 };
