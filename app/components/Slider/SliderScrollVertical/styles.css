@@ -1,0 +1,44 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+.container {
+  height: 100vh;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+}
+.panel {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 4rem;
+  scroll-snap-align: start;
+}
+
+.red {
+  color: #e26161;
+  background-color: rgb(24, 2, 2);
+}
+.green {
+  color: #258b27;
+  background-color: rgb(7, 29, 3);
+}
+.yelow {
+  color: #baba09;
+  background-color: rgb(73, 77, 1);
+}
+.blue {
+  color: #1616dc;
+  background-color: rgb(7, 2, 38);
+}
+.pink {
+  color: #ec92a3;
+  background-color: #76404a;
+}
+.turkey {
+  color: #02b8a5;
+  background-color: #05525b;
+}
