@@ -1,191 +1,74 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { ChevronRight } from "lucide-react";
-
-import { useNextPrevHandlers } from "@/app/utilities/nextPrevHandlers";
-import { DataProp } from "@/app/data/data";
+import React, { useState, useEffect } from "react";
 import "./stretchslider.css";
+import { DataProp } from "@/app/data/data";
 
+type Slide = DataProp;
 interface StretchSliderProps {
   items?: DataProp[];
   onItemClicked: (item: DataProp) => void;
+  onCloseModal: () => void;
 }
 
 const StretchSlider: React.FC<StretchSliderProps> = ({
-  items,
+  items = [],
   onItemClicked,
+  onCloseModal,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedBrand, setSelectedBrand] = useState<string | null>("Recent");
-  const contentControls = useAnimation();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const slides: Slide[] = require("../../../data/data").default;
 
-  // Brand filtering logic
-  const brands = useMemo(() => {
-    if (!items) return ["Recent"];
-    const brandsSet = new Set(
-      items.filter((item) => item.brand !== "all").map((item) => item.brand)
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isModalOpen, setModalOpen] = useState(false); // Add isModalOpen state
+
+  const handleSlide = (direction: "prev" | "next") => {
+    setActiveSlide((prevActiveSlide) =>
+      direction === "next"
+        ? Math.min(prevActiveSlide + 1, slides.length - 1)
+        : Math.max(prevActiveSlide - 1, 0)
     );
-    return ["Recent", ...Array.from(brandsSet)];
-  }, [items]);
-
-  // Item filtering logic
-  const filteredItems = useMemo(() => {
-    if (!items) return [];
-
-    if (selectedBrand === "Recent") {
-      return items
-        .filter((item) => item.date)
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, 9);
-    }
-
-    return items.filter((item) => item.brand === selectedBrand);
-  }, [selectedBrand, items]);
-
-  // Total items logic
-  const totalItems = useMemo(() => {
-    return selectedBrand === "Recent"
-      ? items?.filter((item) => item.date).length ?? 0
-      : items?.filter((item) => item.brand === selectedBrand).length ?? 0;
-  }, [selectedBrand, items]);
-
-  const { handleNextPrevItems } = useNextPrevHandlers({
-    totalItems,
-    currentIndex,
-    setCurrentIndex,
-  });
-
-  // Use effect for updating active index
-  useEffect(() => {
-    setActiveIndex(currentIndex);
-  }, [currentIndex]);
-
-  // Reset currentIndex when selectedBrand changes
-  useEffect(() => {
-    setCurrentIndex(0);
-  }, [selectedBrand]);
-
-  // Function to handle item click and navigate to the item
-  const handleItemClick = (index: number) => {
-    const clickedItem = filteredItems[index];
-
-    if (clickedItem) {
-      onItemClicked(clickedItem);
-    }
   };
 
-  // Function to open modal
   const handleModal = () => {
+    if (onCloseModal) {
+      onCloseModal();
+    }
     setModalOpen(true);
   };
 
-  // Function to close modal
   const handleCloseModal = () => {
     setModalOpen(false);
   };
 
-  const brandFilterAnimation = {
-    initial: { opacity: 0, y: -10 },
-    hidden: { opacity: 0, y: 0 },
-    show: {
-      transition: {
-        staggerChildren: 0.34,
-        duration: 0.5,
-      },
-      opacity: 1,
-      y: 0,
-    },
-    exit: {
-      opacity: 0,
-      y: 0,
-      transition: {
-        ease: "easeInOut",
-        duration: 0.4,
-      },
-    },
-  };
+  useEffect(() => {
+    // Add logic to handle modal visibility, e.g., adding/removing classes to the modal element
+    // You can use a state variable to manage modal visibility
+    if (isModalOpen) {
+      // Add logic to show the modal
+      // For example, add a CSS class to the modal element
+    } else {
+      // Add logic to hide the modal
+      // For example, remove a CSS class from the modal element
+    }
+  }, [isModalOpen]);
 
   return (
     <div className="stretch-slider-container">
-      <AnimatePresence>
-        <motion.section
-          className="stretch-slider-titles"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1, transition: { duration: 0.3 } }}
-          exit={{ opacity: 0 }}
-          onClick={handleModal}
-        >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: 0.3 } }}
-          >
-            <div className="stretch-brand-title">
-              {filteredItems[currentIndex]
-                ? filteredItems[currentIndex]?.brand
-                : filteredItems.length > 0
-                ? filteredItems[0]?.brand
-                : "Default Brand"}
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: 0.2, delay: 0.1 } }}
-          >
-            <div className="stretch-item-title">
-              {filteredItems[currentIndex]
-                ? filteredItems[currentIndex]?.title
-                : filteredItems.length > 0
-                ? filteredItems[0]?.title
-                : "Default Title"}
-            </div>
-          </motion.div>
-        </motion.section>
-      </AnimatePresence>
-
-      <AnimatePresence>
-        <motion.div
-          className="stretch-thumbnail-container"
-          initial={{ opacity: 0, scale: 0.99 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            transition: { duration: 0.27, ease: "easeInOut" },
-          }}
-          exit={{
-            opacity: 0,
-            scale: 0.99,
-            transition: { duration: 1.57, ease: "easeInOut" },
-          }}
-          onClick={() => handleItemClick(currentIndex)}
-        >
-          <img
-            className="stretch-thumbnail-image"
-            src={`/images/${filteredItems[currentIndex]?.img}`}
-            alt="Thumbnail Image"
-            width={1000}
-            height={1000}
-          />
-        </motion.div>
-      </AnimatePresence>
-
-      <AnimatePresence>
-        <motion.div className="stretch-slider-nextprev-buttons">
-          <motion.button
-            title="button-next"
-            type="button"
-            className="button-next"
-            onClick={() => handleNextPrevItems("next")}
-            animate={{ scale: 1.2 }}
-          >
-            <motion.div>
-              <ChevronRight />
-            </motion.div>
-          </motion.button>
-        </motion.div>
-      </AnimatePresence>
+      <div
+        className="slides"
+        style={{ transform: `translateY(-${activeSlide * 100}vh)` }}
+      >
+        {slides.map((slide, index) => (
+          <div key={index} className={`stretch-slider-item`}>
+            <img
+              src={`/images/${slide.img}`} // Assuming images are stored in a folder named 'images'
+              alt={`Slide ${index + 1} Image`}
+              className="slide-image"
+            />
+          </div>
+        ))}
+      </div>
+      <button onClick={() => handleSlide("prev")}>Previous</button>
+      <button onClick={() => handleSlide("next")}>Next</button>
     </div>
   );
 };
