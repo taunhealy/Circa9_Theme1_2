@@ -5,6 +5,11 @@
   position: relative;
 }
 
+.container {
+  height: 100vh;
+  width: 100vw;
+}
+
 .panel {
   height: 200px; /* You may need to adjust this based on your design */
   width: 100%;

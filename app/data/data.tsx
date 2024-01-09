@@ -35,7 +35,7 @@ const ItemsData = [
     date: "2023-11-18T08:30:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 1",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 2,
@@ -51,7 +51,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 3,
@@ -83,7 +83,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 5,
@@ -99,7 +99,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 6,
@@ -115,7 +115,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 7,
@@ -131,7 +131,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 8,
@@ -147,7 +147,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 9,
@@ -163,7 +163,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 10,
@@ -179,7 +179,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 11,
@@ -195,7 +195,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 12,
@@ -211,7 +211,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
   {
     id: 13,
@@ -227,7 +227,7 @@ const ItemsData = [
     date: "2023-10-25T14:45:00Z",
     playbackId: "1Rwc00QAWVZrEN6vYHSakQ02SObWCFFCGuKOZ4HCT9jnk",
     videoTitle: "Super Interesting Video 2",
-    img: "marcell-rubies-cKGtI-S5EPY-unsplash.webp",
+    img: "/images/marcell-rubies-cKGtI-S5EPY-unsplash.webp",
   },
 ];
 export default ItemsData;
