@@ -27,6 +27,11 @@ const SliderScrollVertical = ({ itemsData, onItemClicked }) => {
 
   return (
     <main ref={el} className="container">
+    <div className="overlay">
+        <div className="overlay-top"></div>
+        <div className="overlay-bottom"></div>
+      </div>
+      <div className="slider">
       {itemsData.map((item, index) => (
         <section key={index} className="panel">
           <h1 className="title">{item.title}</h1>
@@ -34,6 +39,7 @@ const SliderScrollVertical = ({ itemsData, onItemClicked }) => {
           <img src={item.img} alt={item.title} className="image" />
         </section>
       ))}
+      </div>
     </main>
   );
 };
