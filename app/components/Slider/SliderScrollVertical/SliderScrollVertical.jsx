@@ -1,5 +1,7 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./styles.css";
@@ -12,14 +14,18 @@ const SliderScrollVertical = ({ itemsData, onItemClicked }) => {
   gsap.registerPlugin(ScrollTrigger);
 
   useLayoutEffect(() => {
-    child(".panel").forEach((panel, index) => {
+    const panels = child(".panel");
+
+    panels.forEach((panel, index) => {
       gsap.from(panel.querySelector("h1"), {
         x: 0,
         scrollTrigger: {
           trigger: panel,
           scroller: el.current,
-          markers: true,
+          markers: false,
           scrub: true,
+          start: "top top",
+          end: "bottom bottom",
         },
       });
     });
@@ -27,18 +33,17 @@ const SliderScrollVertical = ({ itemsData, onItemClicked }) => {
 
   return (
     <main ref={el} className="container">
-    <div className="overlay">
+      <div className="overlay">
         <div className="overlay-top"></div>
         <div className="overlay-bottom"></div>
       </div>
       <div className="slider">
-      {itemsData.map((item, index) => (
-        <section key={index} className="panel">
-          <h1 className="title">{item.title}</h1>
-          {/* You can also include the image here */}
-          <img src={item.img} alt={item.title} className="image" />
-        </section>
-      ))}
+        {itemsData.map((item, index) => (
+          <section key={index} className="panel">
+            <h1 className="title">{item.title}</h1>
+            <img src={item.img} alt={item.title} className="image" />
+          </section>
+        ))}
       </div>
     </main>
   );
