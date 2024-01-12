@@ -5,7 +5,6 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./styles.css";
-import ItemsData from "@/app/data/data";
 
 const SliderScrollVertical = ({ itemsData, onItemClicked }) => {
   const el = useRef(null);

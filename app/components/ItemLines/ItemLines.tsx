@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Minus } from "lucide-react";
-import "./ItemLines.scss";
+import "./itemlines.scss";
 
 interface Item {
   id: number;
