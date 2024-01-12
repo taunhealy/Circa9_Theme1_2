@@ -1,0 +1,11 @@
+html.lenis {
+  display: table;
+}
+
+.slides {
+  display: flex;
+}
+
+.slides img {
+  aspect-ratio: 300/200;
+}

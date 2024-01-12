@@ -1,44 +1,34 @@
-"use client";
-
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+// SliderScrollVertical.js
+import { useEffect, useRef } from "react";
 import "./styles.css";
-import ItemsData from "@/app/data/data";
 
-const SliderScrollVertical = ({ itemsData, onItemClicked }) => {
-  const el = useRef(null);
-  const child = gsap.utils.selector(el);
+import Lenis from "@studio-freight/lenis";
 
-  gsap.registerPlugin(ScrollTrigger);
+const SliderScrollVertical = ({ items, onItemClicked }) => {
+  const containerRef = useRef(null);
 
-  useLayoutEffect(() => {
-    const panels = child(".panel");
+  const lenis = new Lenis();
 
-    panels.forEach((panel, index) => {
-      gsap.from(panel.querySelector("h1"), {
-        x: 0,
-        scrollTrigger: {
-          trigger: panel,
-          scroller: el.current,
-          markers: false,
-          scrub: true,
-          start: "top top",
-          end: "bottom bottom",
-        },
-      });
-    });
-  }, []);
+  lenis.on("scroll", (e) => {
+    console.log(e);
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
 
   return (
-    <main ref={el} className="container">
+    <main>
       <div className="overlay">
         <div className="overlay-top"></div>
         <div className="overlay-bottom"></div>
       </div>
-      <div className="slider">
-        {itemsData.map((item, index) => (
+      <div ref={containerRef} className="container">
+        {items.map((item, index) => (
           <section key={index} className="panel">
             <h1 className="title">{item.title}</h1>
             <img src={item.img} alt={item.title} className="image" />

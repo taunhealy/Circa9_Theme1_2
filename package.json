@@ -13,6 +13,8 @@
     "@mux/mux-player": "^2.3.0",
     "@mux/mux-player-react": "^2.3.0",
     "@mux/mux-video-react": "^0.8.1",
+    "@studio-freight/lenis": "^1.0.33",
+    "@studio-freight/react-lenis": "^0.0.43",
     "framer-motion": "^10.16.16",
     "gsap": "^3.12.4",
     "locomotive-scroll": "^4.1.4",
